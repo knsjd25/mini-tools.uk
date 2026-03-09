@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小女孩的梦幻店 - 视觉修复版</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="story-ui">
+            <div class="shop-scene">
+                <div class="door"></div>
+                <div id="customer-lane"></div>
+            </div>
+
+            <div class="counter-zone" id="interact-area">
+                <div class="ui-panel">
+                    <div class="gold-chip">🪙 <span id="gold-count">0</span></div>
+                    <div id="task-info" class="task-hint">← 请先点击小猫选择顾客</div>
+                </div>
+
+                <div class="interactive-area">
+                    <div class="shelf-section">
+                        <div class="tray-grid">
+                            <div class="tray-item" onclick="serveReady('POTATO', event)">
+                                <div class="plate"><span class="f-ico">🍠</span></div>
+                                <div class="f-name">红薯</div>
+                            </div>
+                            <div class="tray-item" onclick="serveReady('TART', event)">
+                                <div class="plate"><span class="f-ico">🥧</span></div>
+                                <div class="f-name">蛋挞</div>
+                            </div>
+                            <div class="tray-item" onclick="serveReady('MILK', event)">
+                                <div class="plate"><span class="f-ico">🥛</span></div>
+                                <div class="f-name">牛奶</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="machine-section">
+                        <div class="machine locked" id="equip-fry" onclick="clickEquip('FRY', event)">
+                            <div class="m-body"><span id="fry-ico">🔒</span></div>
+                            <div class="m-label">炸锅(500)</div>
+                        </div>
+                        <div class="machine locked" id="equip-oven" onclick="clickEquip('CAKE', event)">
+                            <div class="m-body"><span id="oven-ico">🔒</span></div>
+                            <div class="m-label">烤箱(1000)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-ui" class="hidden">
+            <div class="game-hud"><div id="score-val">0</div></div>
+            <div id="fry-bar" class="hidden"><div id="fry-target"></div><div id="fry-line"></div></div>
+            <canvas id="gameCanvas"></canvas>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
