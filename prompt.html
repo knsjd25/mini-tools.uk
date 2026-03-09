@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">AI Prompt Helper 2026 | Free ChatGPT & Claude Prompt Generator — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Optimize your AI instructions with our free Prompt Helper. Create professional prompts for ChatGPT, Claude, and Gemini using expert frameworks. 100% private and secure." />
+  <meta name="keywords" content="AI Prompt Helper, Prompt Engineering Tool, ChatGPT Prompt Generator, Claude 3.5 instructions, Gemini prompt optimizer, professional AI prompts, write better prompts" />
+  <link rel="canonical" href="https://mini-tools.uk/prompt.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/prompt.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/prompt.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/prompt.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/prompt.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/prompt.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AI Prompt Helper",
+    "operatingSystem": "Web",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "A tool designed to help users craft high-quality instructions for Large Language Models like ChatGPT and Claude.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+    .updated-badge { background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; text-transform: uppercase; display: inline-flex; align-items: center; gap: 4px; }
+    .prompt-card { background: white; border: 1px solid #e2e8f0; transition: all 0.3s ease; }
+    .prompt-card:focus-within { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+    .gradient-btn { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-black shadow">M</a>
+        <span class="text-xl font-extrabold text-slate-900 leading-none">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </div>
+      <select id="lang-select" class="bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-bold outline-none cursor-pointer border-none focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-6 py-12 flex-1">
+    <header class="mb-10 text-center">
+      <div class="mb-4">
+        <span id="update-status" class="updated-badge">
+          ✨ Optimized for Claude 3.5 & GPT-4o
+        </span>
+      </div>
+      <h1 id="page-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight italic">
+        AI Prompt Helper
+      </h1>
+      <p id="page-desc" class="text-lg text-slate-500 max-w-2xl mx-auto">
+        Transform vague ideas into high-performance AI instructions. Improve accuracy, creativity, and results instantly.
+      </p>
+    </header>
+
+    <div class="space-y-6 max-w-2xl mx-auto mb-20">
+      <div class="prompt-card p-6 rounded-3xl shadow-sm">
+        <label id="label-role" class="block text-xs font-black uppercase tracking-widest text-blue-600 mb-3">1. Expert Persona / Role</label>
+        <input type="text" id="input-role" placeholder="e.g. Senior Marketing Consultant, Python Expert..." class="w-full bg-transparent text-lg font-semibold outline-none focus:placeholder-transparent">
+      </div>
+
+      <div class="prompt-card p-6 rounded-3xl shadow-sm">
+        <label id="label-task" class="block text-xs font-black uppercase tracking-widest text-blue-600 mb-3">2. Specific Task & Context</label>
+        <textarea id="input-task" rows="4" placeholder="Describe what you want the AI to do in detail..." class="w-full bg-transparent text-lg font-semibold outline-none resize-none focus:placeholder-transparent"></textarea>
+      </div>
+
+      <button id="btn-generate" onclick="generatePrompt()" class="w-full py-5 gradient-btn text-white font-black rounded-2xl shadow-xl shadow-blue-100 transition-all active:scale-95 text-xl uppercase tracking-wider">
+        Optimize My Prompt
+      </button>
+
+      <div id="result-area" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div class="bg-slate-900 p-8 rounded-3xl shadow-2xl relative border border-slate-700">
+          <label id="label-optimized" class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Optimized Instruction</label>
+          <pre id="output-text" class="text-slate-100 whitespace-pre-wrap font-medium leading-relaxed font-sans"></pre>
+          <button id="btn-copy" onclick="copyPrompt()" class="absolute top-6 right-6 px-4 py-2 bg-white/10 hover:bg-blue-600 text-white text-xs font-bold rounded-lg transition-all">
+            Copy Prompt
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <article class="prose max-w-none border-t border-slate-200 pt-16">
+      <div id="seo-en">
+        <h2>What is Prompt Engineering?</h2>
+        <p><strong>Prompt Engineering</strong> is the practice of refining inputs to Large Language Models (LLMs) like ChatGPT, Claude, and Gemini to get more relevant and accurate outputs. A well-structured prompt can reduce hallucinations and save you time.</p>
+        
+        <h3>The Role-Task-Structure Framework</h3>
+        <p>Our <strong>AI Prompt Helper</strong> uses a professional framework to ensure your instructions are clear:</p>
+        <ul>
+          <li><strong>Role:</strong> Telling the AI to "Act as an expert" sets the tone and expertise level.</li>
+          <li><strong>Task:</strong> A clear, concise objective prevents the AI from becoming sidetracked.</li>
+          <li><strong>Structure:</strong> Requesting a "structured response" makes the output easier to read and use.</li>
+        </ul>
+
+        <h3>Why use Mini-Tools for AI?</h3>
+        <p>Many prompt libraries are bloated. We provide a lightweight <strong>prompt optimizer</strong> that respects your privacy—your data never leaves your browser. It’s perfect for developers, writers, and students looking for the best <strong>AI prompts in 2026</strong>.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>什么是提示词工程 (Prompt Engineering)？</h2>
+        <p><strong>提示词工程</strong>是通过优化输入指令，让 ChatGPT、Claude 或 Gemini 等大语言模型产生更高质量输出的技术。优秀的提示词可以减少 AI 的“幻觉”，并显著提高工作效率。</p>
+        <h3>如何写出优秀的提示词？</h3>
+        <p>使用我们的 <strong>AI 提示词助手</strong>，您可以轻松遵循专家级框架：</p>
+        <ol>
+          <li><strong>角色设定</strong>：赋予 AI 一个具体的专家身份。</li>
+          <li><strong>明确任务</strong>：清晰描述您需要达到的具体目标。</li>
+          <li><strong>输出要求</strong>：规定回复的格式（如列表、Markdown、代码块等）。</li>
+        </ol>
+        <p>本工具完全免费，且保护您的隐私，所有内容均在您的浏览器本地处理。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="bg-white border-t border-slate-100 py-12 mt-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="flex justify-center gap-6 mb-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/tax.html" class="hover:text-blue-600">Tax Calculator</a>
+        <a href="/vat.html" class="hover:text-blue-600">VAT Tool</a>
+      </div>
+      <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+        © 2026 MINI-TOOLS.UK — SMART AI UTILITIES
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "AI Prompt Helper 2026 | Free ChatGPT & Claude Prompt Optimizer",
+        metaDesc: "Optimize your AI instructions for better results. Works with ChatGPT, Claude, and Gemini. Professional prompt engineering made simple.",
+        update: "✨ Optimized for Claude 3.5 & GPT-4o",
+        title: "AI Prompt Helper", desc: "Transform simple ideas into professional AI instructions.",
+        labelRole: "1. Expert Persona / Role", labelTask: "2. Specific Task & Context",
+        placeholderRole: "e.g. Senior Marketing Consultant, Python Expert...", 
+        placeholderTask: "Describe what you want the AI to do in detail...",
+        btnGen: "Optimize My Prompt", labelOpt: "Optimized Instruction", btnCopy: "Copy Prompt",
+        template: "Act as an expert [ROLE]. Your task is to: [TASK]. \n\nPlease provide a high-quality, structured, and professional response. Ensure the information is accurate, creative, and well-organized. Use a tone suitable for the specified role."
+      },
+      zh: {
+        metaTitle: "AI 提示词助手 2026 | 免费 ChatGPT 和 Claude 指令优化工具",
+        metaDesc: "优化您的 AI 提示词，获取更精准的回复。支持 ChatGPT、Claude、文心一言等模型。专业的提示词工程工具。",
+        update: "✨ 已针对 GPT-4o 和 Claude 3.5 优化",
+        title: "AI 提示词助手", desc: "将简单的想法转化为专业的 AI 指令。",
+        labelRole: "1. 专家角色 / 身份设定", labelTask: "2. 具体任务与上下文",
+        placeholderRole: "例如：资深市场顾问、Python 开发专家...", 
+        placeholderTask: "请详细描述您需要 AI 执行的任务...",
+        btnGen: "生成优化提示词", labelOpt: "优化后的指令结果", btnCopy: "复制提示词",
+        template: "请作为 [ROLE] 执行任务。你的目标是：[TASK]。\n\n请提供高质量、结构化且专业的回复。确保内容准确、富有创意且条理清晰。语气应符合设定的专家身份。"
+      }
+    };
+
+    function getLang() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('lang') || 'en';
+    }
+
+    function updateUI() {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+
+      document.title = data.metaTitle;
+      document.getElementById('update-status').innerText = data.update;
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('page-desc').innerText = data.desc;
+      document.getElementById('label-role').innerText = data.labelRole;
+      document.getElementById('label-task').innerText = data.labelTask;
+      document.getElementById('input-role').placeholder = data.placeholderRole;
+      document.getElementById('input-task').placeholder = data.placeholderTask;
+      document.getElementById('btn-generate').innerText = data.btnGen;
+      document.getElementById('label-optimized').innerText = data.labelOpt;
+      document.getElementById('btn-copy').innerText = data.btnCopy;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+      
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+    }
+
+    function generatePrompt() {
+      const role = document.getElementById('input-role').value || "AI Professional";
+      const task = document.getElementById('input-task').value;
+      if (!task) return;
+
+      const lang = getLang();
+      const template = (i18n[lang] || i18n['en']).template;
+      const result = template.replace("[ROLE]", role).replace("[TASK]", task);
+
+      document.getElementById('result-area').classList.remove('hidden');
+      document.getElementById('output-text').innerText = result;
+      document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function copyPrompt() {
+      const text = document.getElementById('output-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btn-copy');
+        const oldText = btn.innerText;
+        btn.innerText = "✓ Copied!";
+        btn.classList.replace('bg-white/10', 'bg-green-600');
+        setTimeout(() => {
+          btn.innerText = oldText;
+          btn.classList.replace('bg-green-600', 'bg-white/10');
+        }, 2000);
+      });
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', e.target.value);
+      window.location.href = url.href;
+    });
+
+    window.onload = updateUI;
+  </script>
+</body>
+</html>

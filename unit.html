@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">Free Unit Converter | Metric to Imperial & Temperature — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Convert between metric and imperial units instantly. Free online tool for length (m to ft), weight (kg to lbs), temperature (C to F), and volume. No sign-up, privacy-first." />
+  <meta name="keywords" content="unit converter online, metric to imperial, meters to feet, kg to lbs, celsius to fahrenheit, volume converter, free conversion tool" />
+  <link rel="canonical" href="https://mini-tools.uk/unit.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/unit.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/unit.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/unit.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/unit.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/unit.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Mini-Tools Unit Converter",
+    "operatingSystem": "Web",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "Instant unit conversion between metric and imperial systems for length, weight, temperature, and volume.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+    .cat-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .unit-input-card { background: white; border: 1px solid #e2e8f0; transition: border-color 0.3s; }
+    .unit-input-card:focus-within { border-color: #4f46e5; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.05); }
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-black shadow">M</a>
+        <span class="text-xl font-extrabold text-slate-900 leading-none">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </div>
+      <select id="lang-select" class="bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-bold outline-none cursor-pointer border-none focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-6 py-12 flex-1">
+    <header class="mb-10 text-center">
+      <h1 id="page-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+        Universal Unit Converter
+      </h1>
+      <p id="page-desc" class="text-lg text-slate-500 max-w-2xl mx-auto">
+        Switch between Metric and Imperial systems instantly. Accurate, fast, and secure.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 gap-8 mb-16">
+      <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
+        
+        <div class="flex flex-wrap justify-center gap-3 border-b border-slate-100 pb-8">
+          <button onclick="setCategory('length', this)" class="cat-btn px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-lg shadow-blue-100" id="btn-length">Length</button>
+          <button onclick="setCategory('weight', this)" class="cat-btn px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm" id="btn-weight">Weight</button>
+          <button onclick="setCategory('temp', this)" class="cat-btn px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm" id="btn-temp">Temp</button>
+          <button onclick="setCategory('volume', this)" class="cat-btn px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm" id="btn-volume">Volume</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] gap-6 items-center">
+          <div class="space-y-3">
+            <div class="unit-input-card p-4 rounded-2xl">
+              <input type="number" id="input-val" value="1" oninput="convert()" class="w-full bg-transparent text-3xl font-black text-slate-900 outline-none text-center">
+            </div>
+            <select id="unit-from" onchange="convert()" class="w-full bg-slate-50 py-3 rounded-xl text-center font-bold text-slate-600 outline-none cursor-pointer border border-slate-100"></select>
+          </div>
+
+          <button onclick="swapUnits()" class="p-4 bg-slate-900 hover:scale-110 text-white rounded-full transition-all shadow-xl active:scale-95">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+          </button>
+
+          <div class="space-y-3">
+            <div id="output-area" class="bg-blue-600 p-4 rounded-2xl relative group cursor-pointer" onclick="copyResult()">
+              <div id="output-val" class="w-full text-3xl font-black text-white text-center overflow-hidden">0</div>
+              <span class="absolute -top-2 -right-2 bg-yellow-400 text-[10px] font-black px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">CLICK TO COPY</span>
+            </div>
+            <select id="unit-to" onchange="convert()" class="w-full bg-slate-50 py-3 rounded-xl text-center font-bold text-slate-600 outline-none cursor-pointer border border-slate-100"></select>
+          </div>
+        </div>
+
+        <div id="formula-box" class="p-5 bg-blue-50/50 rounded-2xl text-center text-sm font-bold text-blue-600 border border-blue-100">
+          Calculation formula will appear here.
+        </div>
+      </div>
+    </div>
+
+    <article class="prose max-w-none border-t border-slate-200 pt-16">
+      <div id="seo-en">
+        <h2>Metric vs. Imperial: Why do we need conversion?</h2>
+        <p>While most of the world uses the <strong>Metric system</strong> (meters, kilograms, liters), the <strong>Imperial system</strong> (inches, pounds, gallons) is still widely used in the USA and for certain applications in the UK. Our <strong>online unit converter</strong> helps you bridge this gap instantly.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
+          <div class="bg-white p-6 rounded-2xl border border-slate-100">
+            <h3 class="mt-0">Popular Length Conversions</h3>
+            <ul class="text-sm space-y-2">
+              <li>• 1 Meter to Feet = 3.2808 ft</li>
+              <li>• 1 Inch to Centimeters = 2.54 cm</li>
+              <li>• 1 Mile to Kilometers = 1.6093 km</li>
+            </ul>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-slate-100">
+            <h3 class="mt-0">Popular Weight Conversions</h3>
+            <ul class="text-sm space-y-2">
+              <li>• 1 Kilogram to Pounds = 2.2046 lb</li>
+              <li>• 1 Ounce to Grams = 28.3495 g</li>
+              <li>• 1 Stone to Kilograms = 6.3503 kg</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Temperature Conversion: Celsius to Fahrenheit</h3>
+        <p>Converting temperature is unique because it's not just a simple multiplier. The formula for <strong>Celsius to Fahrenheit</strong> is $(^\circ C \times 9/5) + 32$. Our tool handles these complex calculations for you, including <strong>Kelvin</strong> for scientific needs.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>为什么需要单位换算？</h2>
+        <p>全球大部分地区使用<strong>公制单位</strong>（米、千克、升），但在美国和英国的部分领域，<strong>英制单位</strong>（英寸、磅、加仑）依然非常普遍。Mini-Tools.uk 提供的<strong>在线单位换算器</strong>能帮您秒速完成转换。</p>
+        <h3>常见换算公式</h3>
+        <ul>
+          <li><strong>长度</strong>：1 米 (m) ≈ 3.28 英尺 (ft)</li>
+          <li><strong>重量</strong>：1 千克 (kg) ≈ 2.2 磅 (lb)</li>
+          <li><strong>温度</strong>：华氏度 (°F) = (摄氏度 × 9/5) + 32</li>
+        </ul>
+        <p>我们的工具完全免费，隐私安全，所有计算均在您的浏览器本地完成。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="bg-white border-t border-slate-100 py-12 mt-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="flex justify-center gap-6 mb-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/tax.html" class="hover:text-blue-600">Tax Calc</a>
+        <a href="/qr.html" class="hover:text-blue-600">QR Gen</a>
+      </div>
+      <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+        © 2026 MINI-TOOLS.UK — FAST & SECURE UNIT CONVERSION
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "Free Unit Converter | Metric to Imperial & Temp — Mini-Tools",
+        metaDesc: "Convert length, weight, and temperature instantly. Free metric to imperial converter for meters to feet, kg to lbs, Celsius to Fahrenheit.",
+        title: "Universal Unit Converter", desc: "Metric & Imperial quick swap.",
+        length: "Length", weight: "Weight", temp: "Temp", volume: "Volume",
+        units: {
+          m: "Meters (m)", km: "Kilometers (km)", ft: "Feet (ft)", in: "Inches (in)", mi: "Miles (mi)", cm: "Centimeters (cm)",
+          kg: "Kilograms (kg)", g: "Grams (g)", lb: "Pounds (lb)", oz: "Ounces (oz)", st: "Stone (st)",
+          c: "Celsius (°C)", f: "Fahrenheit (°F)", k: "Kelvin (K)",
+          l: "Liters (L)", ml: "Milliliters (ml)", gal: "Gallons (US)", floz: "Fluid Ounces (oz)"
+        }
+      },
+      zh: {
+        metaTitle: "单位换算器 | 公制英制转换 & 温度换算 — Mini-Tools",
+        metaDesc: "即时转换长度、重量和温度。免费公制转英制工具，支持米转英尺、千克转磅、摄氏度转华氏度。",
+        title: "万能单位换算器", desc: "公制与英制单位快速转换。",
+        length: "长度", weight: "重量", temp: "温度", volume: "体积",
+        units: {
+          m: "米 (m)", km: "千米 (km)", ft: "英尺 (ft)", in: "英寸 (in)", mi: "英里 (mi)", cm: "厘米 (cm)",
+          kg: "千克 (kg)", g: "克 (g)", lb: "磅 (lb)", oz: "盎司 (oz)", st: "英石 (st)",
+          c: "摄氏度 (°C)", f: "华氏度 (°F)", k: "开尔文 (K)",
+          l: "升 (L)", ml: "毫升 (ml)", gal: "加仑 (美)", floz: "液量盎司"
+        }
+      }
+    };
+
+    const conversionRates = {
+      length: { m: 1, km: 1000, ft: 0.3048, in: 0.0254, mi: 1609.34, cm: 0.01 },
+      weight: { kg: 1, g: 0.001, lb: 0.453592, oz: 0.0283495, st: 6.35029 },
+      volume: { l: 1, ml: 0.001, gal: 3.78541, floz: 0.0295735 }
+    };
+
+    let currentCategory = 'length';
+
+    function getLang() {
+      return new URLSearchParams(window.location.search).get('lang') || 'en';
+    }
+
+    function setCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.className = 'cat-btn px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm';
+      });
+      btn.className = 'cat-btn px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-lg shadow-blue-100';
+      populateUnits();
+    }
+
+    function populateUnits() {
+      const lang = getLang();
+      const unitData = i18n[lang].units;
+      const fromSelect = document.getElementById('unit-from');
+      const toSelect = document.getElementById('unit-to');
+      
+      let options = '';
+      const availableUnits = currentCategory === 'temp' ? ['c', 'f', 'k'] : Object.keys(conversionRates[currentCategory]);
+      
+      availableUnits.forEach(u => {
+        options += `<option value="${u}">${unitData[u]}</option>`;
+      });
+
+      fromSelect.innerHTML = options;
+      toSelect.innerHTML = options;
+      toSelect.selectedIndex = 1;
+      convert();
+    }
+
+    function convert() {
+      const valInput = document.getElementById('input-val');
+      const val = parseFloat(valInput.value);
+      const from = document.getElementById('unit-from').value;
+      const to = document.getElementById('unit-to').value;
+      const lang = getLang();
+      
+      if (isNaN(val)) {
+        document.getElementById('output-val').innerText = "0";
+        return;
+      }
+
+      let result;
+      if (currentCategory === 'temp') {
+        result = convertTemp(val, from, to);
+      } else {
+        const inBase = val * conversionRates[currentCategory][from];
+        result = inBase / conversionRates[currentCategory][to];
+      }
+
+      const formattedResult = Number(result.toFixed(6));
+      document.getElementById('output-val').innerText = formattedResult.toLocaleString(undefined, {maximumFractionDigits: 6});
+      
+      // 更新公式展示
+      const unitNames = i18n[lang].units;
+      document.getElementById('formula-box').innerText = `1 ${unitNames[from]} = ${(result/val).toFixed(4)} ${unitNames[to]}`;
+    }
+
+    function convertTemp(v, f, t) {
+      let c;
+      if (f === 'c') c = v;
+      else if (f === 'f') c = (v - 32) * 5/9;
+      else if (f === 'k') c = v - 273.15;
+
+      if (t === 'c') return c;
+      if (t === 'f') return (c * 9/5) + 32;
+      if (t === 'k') return c + 273.15;
+    }
+
+    function swapUnits() {
+      const from = document.getElementById('unit-from');
+      const to = document.getElementById('unit-to');
+      const temp = from.value;
+      from.value = to.value;
+      to.value = temp;
+      convert();
+    }
+
+    function copyResult() {
+      const text = document.getElementById('output-val').innerText;
+      navigator.clipboard.writeText(text);
+      const outputArea = document.getElementById('output-area');
+      outputArea.classList.add('ring-4', 'ring-yellow-400');
+      setTimeout(() => outputArea.classList.remove('ring-4', 'ring-yellow-400'), 500);
+    }
+
+    function updateLanguage() {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+      
+      document.title = data.metaTitle;
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('page-desc').innerText = data.desc;
+      document.getElementById('btn-length').innerText = data.length;
+      document.getElementById('btn-weight').innerText = data.weight;
+      document.getElementById('btn-temp').innerText = data.temp;
+      document.getElementById('btn-volume').innerText = data.volume;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+      populateUnits();
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      window.location.href = `?lang=${e.target.value}`;
+    });
+
+    window.onload = updateLanguage;
+  </script>
+</body>
+</html>

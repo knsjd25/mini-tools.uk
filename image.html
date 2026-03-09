@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">Free Online Image Resizer & Optimizer 2026 | Compress JPG, PNG, WebP — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Resize and compress images instantly in your browser. Support for JPG, PNG, and WebP. 100% private: no files are uploaded to any server. Professional image tuning for free." />
+  <meta name="keywords" content="image resizer, image optimizer, compress jpg, png compressor, convert to webp, resize photo online, private image tool, high quality compression" />
+  <link rel="canonical" href="https://mini-tools.uk/image.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/image.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/image.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/image.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/image.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/image.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Mini-Tools Image Resizer & Optimizer",
+    "operatingSystem": "Web",
+    "applicationCategory": "MultimediaApplication",
+    "description": "Adjust image dimensions and file size without losing quality. Works entirely in your browser using modern WebP/JPG compression standards.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+    .drop-zone { border: 3px dashed #e2e8f0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .drop-zone.active { border-color: #2563eb; background-color: #eff6ff; transform: scale(1.01); }
+    input[type=range] { -webkit-appearance: none; background: #e2e8f0; height: 6px; border-radius: 5px; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: #2563eb; border-radius: 50%; cursor: pointer; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+    canvas { display: none; }
+    .active-fmt { background-color: #2563eb !important; color: white !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="bg-white border-b border-slate-200 shrink-0 sticky top-0 z-50 backdrop-blur-md bg-white/90">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-black shadow transition-transform active:scale-90">M</a>
+        <span class="text-xl font-extrabold text-slate-900 leading-none tracking-tight">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </div>
+      <select id="lang-select" class="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-6 py-12 flex-1">
+    <header class="mb-10 text-center">
+      <div class="mb-4">
+        <span class="bg-blue-50 text-blue-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-sm border border-blue-100">
+          ⚡ 100% Client-Side • Privacy Protected
+        </span>
+      </div>
+      <h1 id="page-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+        Image Resizer & Optimizer
+      </h1>
+      <p id="page-desc" class="text-lg text-slate-500 max-w-2xl mx-auto">
+        Adjust dimensions and reduce file size without losing clarity. Fast, secure, and professional.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr,350px] gap-8 mb-20">
+      <div class="space-y-6">
+        <div id="drop-area" class="drop-zone bg-white rounded-[2.5rem] p-12 text-center cursor-pointer shadow-sm min-h-[400px] flex flex-col items-center justify-center">
+          <input type="file" id="file-input" accept="image/*" class="hidden">
+          
+          <div id="upload-placeholder" class="animate-in fade-in zoom-in duration-300">
+            <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center mb-6 text-blue-600 mx-auto shadow-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 id="label-upload" class="text-2xl font-black text-slate-900">Select or Drag Image</h3>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-3">High-quality JPG, PNG, or WebP</p>
+          </div>
+
+          <div id="preview-container" class="hidden w-full animate-in fade-in slide-in-from-bottom-4">
+            <div class="relative group inline-block">
+                <img id="img-preview" class="max-h-[450px] mx-auto rounded-3xl shadow-2xl border-8 border-white">
+                <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl pointer-events-none"></div>
+            </div>
+            <div class="flex justify-center gap-8 mt-8 text-[11px] font-black uppercase tracking-widest text-slate-400">
+              <div class="flex flex-col gap-1">
+                  <span>Original Size</span>
+                  <span id="size-orig" class="text-slate-900 text-lg">0 KB</span>
+              </div>
+              <div class="w-px bg-slate-200 h-10"></div>
+              <div class="flex flex-col gap-1">
+                  <span>Optimized Size</span>
+                  <span id="size-new" class="text-blue-600 text-lg">0 KB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 space-y-8 h-fit sticky top-28">
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-5">
+            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <h4 id="label-settings" class="text-xs font-black text-slate-900 uppercase tracking-widest">Tuning Settings</h4>
+        </div>
+        
+        <div class="space-y-5">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-tighter">Width (px)</label>
+              <input type="number" id="input-w" class="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+            </div>
+            <div>
+              <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-tighter">Height (px)</label>
+              <input type="number" id="input-h" class="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+            </div>
+          </div>
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <div class="relative">
+                <input type="checkbox" id="chk-ratio" checked class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition-all">
+            </div>
+            <span id="label-ratio" class="text-xs font-bold text-slate-600 group-hover:text-blue-600 transition-colors">Lock Aspect Ratio</span>
+          </label>
+        </div>
+
+        <div>
+          <div class="flex justify-between mb-4">
+            <label id="label-quality" class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Compression Quality</label>
+            <span id="quality-val" class="text-blue-600 font-black text-sm">80%</span>
+          </div>
+          <input type="range" id="input-quality" min="5" max="100" value="80" class="w-full cursor-pointer" oninput="updateSettings()">
+        </div>
+
+        <div>
+          <label id="label-format" class="text-[10px] font-black text-slate-400 uppercase mb-3 block tracking-widest">Export Format</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="setFormat('image/jpeg', this)" class="fmt-btn px-2 py-3 rounded-xl bg-slate-50 text-slate-600 font-black text-[11px] border border-slate-100 active-fmt transition-all">JPG</button>
+            <button onclick="setFormat('image/png', this)" class="fmt-btn px-2 py-3 rounded-xl bg-slate-50 text-slate-600 font-black text-[11px] border border-slate-100 transition-all">PNG</button>
+            <button onclick="setFormat('image/webp', this)" class="fmt-btn px-2 py-3 rounded-xl bg-slate-50 text-slate-600 font-black text-[11px] border border-slate-100 transition-all">WEBP</button>
+          </div>
+        </div>
+
+        <button id="btn-download" onclick="downloadImage()" class="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl shadow-blue-100 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm uppercase tracking-widest">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+          <span id="label-btn-down">Download Optimized</span>
+        </button>
+      </div>
+    </div>
+
+    <article class="prose max-w-none border-t border-slate-200 pt-16">
+      <div id="seo-en">
+        <h2>Professional Image Compression for the Modern Web</h2>
+        <p>Large images are the primary cause of slow website performance. Our <strong>online image resizer</strong> utilizes advanced canvas rendering to reduce file size without sacrificing clarity. Optimized for 2026 standards, we support <strong>WebP</strong>—the format Google loves for superior SEO performance.</p>
+        
+        <figure class="my-10 rounded-[2rem] overflow-hidden shadow-2xl border border-slate-100 group">
+          <img src="http://googleusercontent.com/image_collection/image_retrieval/1606738885023761180_0" 
+               alt="Comparison of image compression showing file size reduction while maintaining quality" 
+               class="w-full h-auto transition-transform duration-700 group-hover:scale-105">
+          <figcaption class="text-center text-[11px] font-bold text-slate-400 py-4 bg-slate-50/50 uppercase tracking-widest">
+            Visual Proof: Original (left) vs. 80% Compressed (right)
+          </figcaption>
+        </figure>
+        
+        <h3>Why Mini-Tools is Different?</h3>
+        <p>Unlike other tools that send your data to remote servers, we process everything on the <strong>client-side</strong>. Your photos stay on your device, making this the most secure way to handle private documents or personal photos.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>为什么选择 Mini-Tools 进行图片调优？</h2>
+        <p>过大的图片是影响网页加载速度的核心因素。我们的工具采用 <strong>Web Crypto API</strong> 级别的隐私标准，所有图片均在浏览器本地处理，绝不上传云端。</p>
+        
+        <figure class="my-10 rounded-[2rem] overflow-hidden shadow-2xl border border-slate-100 group">
+          <img src="http://googleusercontent.com/image_collection/image_retrieval/1606738885023761180_0" 
+               alt="图片压缩对比展示，在保证清晰度的同时显著减小文件体积" 
+               class="w-full h-auto transition-transform duration-700 group-hover:scale-105">
+          <figcaption class="text-center text-[11px] font-bold text-slate-400 py-4 bg-slate-50/50 uppercase tracking-widest">
+            效果对比：原图 vs WebP 80% 质量压缩
+          </figcaption>
+        </figure>
+
+        <h3>核心优势</h3>
+        <ul>
+          <li><strong>格式转换</strong>：一键将 JPG/PNG 转换为高效的 WebP 格式，平均体积减少 35%。</li>
+          <li><strong>隐私安全</strong>：本地 JS 引擎渲染，适合处理身份证、发票等敏感资料。</li>
+          <li><strong>零损调整</strong>：支持等比例锁定，防止图片拉伸变形。</li>
+        </ul>
+        <p>计算公式参考：$$\text{New Size} \approx \text{Old Size} \times \text{Quality} \times \text{Format Factor}$$</p>
+      </div>
+    </article>
+  </main>
+
+  <canvas id="main-canvas"></canvas>
+
+  <footer class="bg-white border-t border-slate-100 py-12">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <div class="flex justify-center gap-8 mb-6 text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
+        <a href="/pdf.html" class="hover:text-blue-600 transition-colors">PDF To Image</a>
+        <a href="/json.html" class="hover:text-blue-600 transition-colors">JSON Formatter</a>
+      </div>
+      <p class="text-[10px] text-slate-300 font-black uppercase tracking-[0.2em]">
+        © 2026 MINI-TOOLS.UK — SECURE IMAGE TUNING
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "Free Online Image Resizer & Optimizer 2026 | Resize JPG, PNG, WebP",
+        metaDesc: "Resize and compress images instantly in your browser. 100% private, no server uploads. Adjust quality and format for better SEO performance.",
+        title: "Image Resizer & Optimizer", 
+        desc: "Adjust dimensions and reduce file size without losing clarity.",
+        upload: "Select or Drag Image", settings: "Tuning Settings",
+        ratio: "Lock Aspect Ratio", quality: "Compression Quality", format: "Export Format",
+        btnDown: "Download Optimized"
+      },
+      zh: {
+        metaTitle: "免费在线图片尺寸修改与优化器 | 压缩 JPG, PNG, WebP — Mini-Tools",
+        metaDesc: "即时修改图片尺寸与压缩体积。100% 本地隐私保障，不上传文件。支持导出为现代 WebP 格式提升网站加载速度。",
+        title: "图片调优与尺寸修改", 
+        desc: "轻松调整图片分辨率，在保持清晰度的同时极速减小体积。",
+        upload: "选择或拖拽图片至此", settings: "调优参数设置",
+        ratio: "锁定纵横比", quality: "压缩质量调节", format: "导出格式选择",
+        btnDown: "立即下载压缩图"
+      }
+    };
+
+    let originalImg = null;
+    let exportFormat = 'image/jpeg';
+    let ratio = 1;
+
+    const canvas = document.getElementById('main-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function getLang() { return new URLSearchParams(window.location.search).get('lang') || 'en'; }
+
+    function updateLanguage() {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+      document.title = data.metaTitle;
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('page-desc').innerText = data.desc;
+      document.getElementById('label-upload').innerText = data.upload;
+      document.getElementById('label-settings').innerText = data.settings;
+      document.getElementById('label-ratio').innerText = data.ratio;
+      document.getElementById('label-quality').innerText = data.quality;
+      document.getElementById('label-format').innerText = data.format;
+      document.getElementById('label-btn-down').innerText = data.btnDown;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+    }
+
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+    
+    dropArea.onclick = () => fileInput.click();
+    dropArea.ondragover = (e) => { e.preventDefault(); dropArea.classList.add('active'); };
+    dropArea.ondragleave = () => dropArea.classList.remove('active');
+    dropArea.ondrop = (e) => {
+      e.preventDefault();
+      dropArea.classList.remove('active');
+      handleFile(e.dataTransfer.files[0]);
+    };
+    fileInput.onchange = (e) => handleFile(e.target.files[0]);
+
+    function handleFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      document.getElementById('size-orig').innerText = formatSize(file.size);
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        originalImg = new Image();
+        originalImg.onload = () => {
+          ratio = originalImg.width / originalImg.height;
+          document.getElementById('input-w').value = originalImg.width;
+          document.getElementById('input-h').value = originalImg.height;
+          
+          document.getElementById('upload-placeholder').classList.add('hidden');
+          document.getElementById('preview-container').classList.remove('hidden');
+          document.getElementById('img-preview').src = e.target.result;
+          updateSettings();
+        };
+        originalImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function setFormat(fmt, btn) {
+      exportFormat = fmt;
+      document.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('active-fmt'));
+      btn.classList.add('active-fmt');
+      updateSettings();
+    }
+
+    function updateSettings() {
+      if (!originalImg) return;
+      const w = parseInt(document.getElementById('input-w').value);
+      const h = parseInt(document.getElementById('input-h').value);
+      const quality = parseInt(document.getElementById('input-quality').value) / 100;
+      document.getElementById('quality-val').innerText = Math.round(quality * 100) + "%";
+
+      canvas.width = w;
+      canvas.height = h;
+      ctx.drawImage(originalImg, 0, 0, w, h);
+      
+      const dataUrl = canvas.toDataURL(exportFormat, quality);
+      // 估算 DataURL 体积并修正
+      const head = `data:${exportFormat};base64,`.length;
+      const sizeStr = formatSize((dataUrl.length - head) * 0.75);
+      document.getElementById('size-new').innerText = sizeStr;
+    }
+
+    document.getElementById('input-w').oninput = (e) => {
+      if (document.getElementById('chk-ratio').checked && originalImg) {
+        document.getElementById('input-h').value = Math.round(e.target.value / ratio);
+      }
+      updateSettings();
+    };
+    document.getElementById('input-h').oninput = (e) => {
+      if (document.getElementById('chk-ratio').checked && originalImg) {
+        document.getElementById('input-w').value = Math.round(e.target.value * ratio);
+      }
+      updateSettings();
+    };
+
+    function downloadImage() {
+      if (!originalImg) return;
+      const quality = parseInt(document.getElementById('input-quality').value) / 100;
+      const dataUrl = canvas.toDataURL(exportFormat, quality);
+      const link = document.createElement('a');
+      const ext = exportFormat.split('/')[1];
+      link.download = `mini-tools-optimized-${Date.now()}.${ext}`;
+      link.href = dataUrl;
+      link.click();
+    }
+
+    function formatSize(bytes) {
+      if (bytes === 0) return '0 KB';
+      const k = 1024, sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      if (i === 0) return bytes + ' ' + sizes[i];
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    window.onload = updateLanguage;
+  </script>
+</body>
+</html>

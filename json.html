@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">Online JSON Formatter & Validator | Beautify, Minify & Fix JSON — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Free, privacy-first online JSON formatter and validator. Beautify, minify, and automatically fix common JSON errors like trailing commas and comments. 100% browser-based." />
+  <meta name="keywords" content="JSON Formatter, JSON Validator, Beautify JSON, Minify JSON, Fix JSON online, JSON Debugger, AI JSON fixer, online developer tools" />
+  <link rel="canonical" href="https://mini-tools.uk/json.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/json.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/json.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/json.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/json.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/json.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Mini-Tools JSON Formatter & Validator",
+    "operatingSystem": "Web",
+    "applicationCategory": "DeveloperApplication",
+    "description": "An advanced JSON utility to format, validate, and repair JSON code instantly in the browser.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .editor-container { height: 70vh; min-height: 500px; }
+    .editor-area { 
+      font-family: 'Monaco', 'Consolas', 'Liberation Mono', monospace; 
+      resize: none; line-height: 1.5;
+    }
+    .panel-valid { background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .panel-error { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+    .sample-btn:hover { background-color: #f1f5f9; color: #2563eb; }
+
+    @media (max-width: 1024px) {
+      .editor-container { height: auto; }
+      .editor-area { height: 300px; }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <nav class="bg-white border-b border-slate-200 shrink-0 sticky top-0 z-50">
+    <div class="max-w-[1800px] mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-black shadow text-sm">M</a>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+            <span class="text-sm font-extrabold text-slate-900 leading-none">Mini-Tools<span class="text-blue-600">.uk</span></span>
+            <span id="page-title-label" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-l border-slate-200 pl-2 hidden sm:block">JSON Formatter</span>
+        </div>
+      </div>
+      <select id="lang-select" class="bg-slate-50 border border-slate-200 px-3 py-1 rounded text-[11px] font-bold outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <div class="bg-white border-b border-slate-100 px-4 py-2 flex flex-wrap gap-2 items-center sticky top-[53px] z-40 shadow-sm">
+    <button onclick="processJSON('beautify')" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-lg shadow-lg shadow-blue-100 transition-all active:scale-95">Beautify & Fix</button>
+    <button onclick="processJSON('minify')" class="px-5 py-2 bg-slate-800 hover:bg-black text-white text-xs font-black rounded-lg shadow-lg shadow-slate-200 transition-all active:scale-95">Minify</button>
+    
+    <div class="h-6 w-px bg-slate-200 mx-2 hidden sm:block"></div>
+    
+    <div class="relative inline-block text-left group">
+        <button class="px-4 py-2 text-slate-600 hover:bg-slate-50 text-xs font-bold rounded-lg border border-slate-200 flex items-center gap-1">
+            <span id="label-samples">Load Sample</span>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
+        <div class="absolute left-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 p-1">
+            <button onclick="loadSample('standard')" class="sample-btn w-full text-left px-4 py-2 text-[11px] font-bold rounded-lg transition-colors">Standard JSON</button>
+            <button onclick="loadSample('ai')" class="sample-btn w-full text-left px-4 py-2 text-[11px] font-bold rounded-lg transition-colors">AI Style (With Errors)</button>
+            <button onclick="loadSample('nested')" class="sample-btn w-full text-left px-4 py-2 text-[11px] font-bold rounded-lg transition-colors">Complex Nested</button>
+        </div>
+    </div>
+
+    <button onclick="copyJSON()" id="btn-copy" class="px-5 py-2 text-slate-600 hover:bg-slate-50 text-xs font-bold rounded-lg border border-slate-200">Copy Result</button>
+    <button onclick="clearAll()" class="px-5 py-2 text-red-500 hover:bg-red-50 text-xs font-bold rounded-lg ml-auto">Clear</button>
+  </div>
+
+  <main class="flex-1 p-4 bg-slate-50">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 editor-container mb-12">
+      <div class="flex flex-col relative group h-full">
+        <div class="absolute top-3 right-5 text-[10px] font-black text-slate-300 uppercase pointer-events-none z-10">Input JSON</div>
+        <textarea id="json-input" class="editor-area flex-1 w-full p-6 bg-white border border-slate-200 rounded-2xl shadow-sm outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 text-[13px] transition-all" placeholder='Paste your messy JSON code here...'></textarea>
+      </div>
+
+      <div class="flex flex-col gap-4 h-full">
+        <div id="status-panel" class="hidden p-5 rounded-2xl text-[12px] font-bold border transition-all shadow-sm">
+            <div id="status-type" class="uppercase text-[9px] mb-2 tracking-widest opacity-60">Validator Report</div>
+            <div id="status-msg" class="whitespace-pre-wrap leading-relaxed font-mono"></div>
+        </div>
+
+        <div class="flex-1 flex flex-col min-h-0 relative group">
+          <div class="absolute top-3 right-5 text-[10px] font-black text-slate-300 uppercase pointer-events-none z-10">Formatted Output</div>
+          <textarea id="json-output" readonly class="editor-area flex-1 w-full p-6 bg-white border border-slate-200 rounded-2xl shadow-sm outline-none text-[13px] text-slate-700 cursor-default" placeholder="Your clean JSON will appear here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <article class="max-w-4xl mx-auto prose prose-slate pb-20 border-t border-slate-200 pt-12">
+      <div id="seo-en">
+        <h2>What is a JSON Formatter & Validator?</h2>
+        <p>A <strong>JSON Formatter</strong> (or JSON Beautifier) is an essential tool for developers to convert minified, unreadable JSON data into a structured, human-readable format. Our tool doesn't just "beautify" code; it also acts as a <strong>JSON Validator</strong> to identify syntax errors such as missing commas or mismatched brackets.</p>
+        
+        <h3>Automatically Fix AI-Generated JSON</h3>
+        <p>Are you using LLMs like ChatGPT or Claude? AI often generates JSON with <strong>comments (//)</strong> or <strong>trailing commas</strong>, which are technically invalid in the standard JSON specification. Our debugger is specifically optimized to <strong>auto-fix</strong> these common issues.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>为什么需要 JSON 格式化工具？</h2>
+        <p><strong>JSON 格式化器</strong>（也称为 JSON Beautifier）是开发者必备的工具，用于将压缩过的、难以阅读的 JSON 数据转换为结构清晰、易于理解的格式。本工具不仅能美化代码，还是一个强大的 <strong>JSON 校验器</strong>。</p>
+        
+        <h3>自动修复 AI 生成的错误</h3>
+        <p>在使用 ChatGPT 或 Claude 生成代码时，AI 经常会输出带有<strong>注释 (//)</strong> 或<strong>末尾多余逗号</strong>的非法 JSON。我们的调试器经过特别优化，可以<strong>自动识别并修复</strong>这些问题。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-8 shrink-0">
+    <div class="max-w-[1800px] mx-auto px-4 text-center">
+      <div class="flex justify-center gap-6 mb-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/pdf.html" class="hover:text-blue-600">PDF to Image</a>
+        <a href="/pass.html" class="hover:text-blue-600">Password Gen</a>
+      </div>
+      <p class="text-[9px] text-slate-300 font-bold uppercase tracking-widest">
+        © 2026 MINI-TOOLS.UK — SECURE LOCAL JSON DEBUGGING
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const samples = {
+        standard: {
+            id: 1,
+            name: "John Doe",
+            roles: ["admin", "developer"],
+            active: true,
+            metadata: {
+                last_login: "2026-03-06T10:00:00Z",
+                ip: "192.168.1.1"
+            }
+        },
+        ai: `{
+    // This is a comment from AI
+    "user": "Assistant",
+    "tasks": ["coding", "SEO optimization"],
+    "status": "active",
+    "trailing_comma": true, // Standard JSON would fail here
+}`,
+        nested: {
+            project: "Mini-Tools",
+            version: 2.0,
+            features: [
+                { id: "f1", name: "PDF Converter", secure: true },
+                { id: "f2", name: "JSON Debugger", secure: true, options: { mode: "local", buffer: 1024 } }
+            ],
+            stats: { users: 5000, uptime: "99.9%" }
+        }
+    };
+
+    const i18n = {
+      en: { 
+        metaTitle: "Online JSON Formatter & Validator | Beautify & Fix JSON — Mini-Tools",
+        metaDesc: "The best online JSON tool to beautify, minify, and fix JSON errors. Support for comments and trailing commas. 100% private and secure.",
+        title: "JSON Debugger", samples: "Load Sample",
+        valid: "✅ Success: JSON is perfectly cleaned and validated.", 
+        errMissingComma: "❌ Error: Missing comma between properties.",
+        errComment: "⚠️ Note: Automatically removed illegal comments.",
+        errTrailing: "⚠️ Note: Automatically removed extra trailing comma.",
+        errGeneral: "❌ Syntax Error: ",
+        line: "Line", col: "Col"
+      },
+      zh: { 
+        metaTitle: "在线 JSON 格式化 & 校验工具 | 自动修复 JSON 错误 — Mini-Tools",
+        metaDesc: "专业的在线 JSON 格式化工具，支持美化、压缩及自动修复语法错误。自动处理注释和末尾逗号，100% 本地隐私保障。",
+        title: "JSON 调试器", samples: "加载示例",
+        valid: "✅ 成功：JSON 已自动校验、修复并完成清洗。", 
+        errMissingComma: "❌ 错误：属性之间缺少逗号 (,)。",
+        errComment: "⚠️ 提示：已自动删除非法注释 (//)。",
+        errTrailing: "⚠️ 提示：已自动删除末尾多余逗号 (,)。",
+        errGeneral: "❌ 语法错误: ",
+        line: "行", col: "列"
+      }
+    };
+
+    function updateLanguage() {
+      const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+      const data = i18n[lang] || i18n['en'];
+
+      document.title = data.metaTitle;
+      document.getElementById('page-title-label').innerText = data.title;
+      document.getElementById('label-samples').innerText = data.samples;
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+    }
+
+    function loadSample(type) {
+        let content = samples[type];
+        if (typeof content === 'object') content = JSON.stringify(content, null, 4);
+        document.getElementById('json-input').value = content;
+        processJSON('beautify');
+    }
+
+    function processJSON(mode) {
+      let raw = document.getElementById('json-input').value.trim();
+      if (!raw) return;
+      
+      const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+      const text = i18n[lang];
+      let diagnostics = [];
+
+      if (/\/\/|\/\*/.test(raw)) diagnostics.push(text.errComment);
+      if (/,\s*[\]}]/.test(raw)) diagnostics.push(text.errTrailing);
+      
+      let cleaned = raw
+        .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1')
+        .replace(/,\s*([\]}])/g, '$1')
+        .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
+        .trim();
+
+      try {
+        const obj = JSON.parse(cleaned);
+        document.getElementById('json-output').value = (mode === 'beautify') ? JSON.stringify(obj, null, 4) : JSON.stringify(obj);
+        let report = diagnostics.length > 0 ? diagnostics.join("\n") : text.valid;
+        showReport(report, "valid");
+      } catch (e) {
+        let errorMsg = e.message;
+        if (errorMsg.includes("expected ','")) errorMsg = text.errMissingComma;
+        showReport(`${text.errGeneral}\n${parseError(e, raw, lang)}\n\n${errorMsg}`, "error");
+        document.getElementById('json-output').value = "";
+      }
+    }
+
+    function parseError(e, input, lang) {
+      const posMatch = e.message.match(/position (\d+)/);
+      if (!posMatch) return e.message;
+      const pos = parseInt(posMatch[1]);
+      const lines = input.substring(0, pos).split("\n");
+      const t = i18n[lang];
+      return `[${t.line} ${lines.length}, ${t.col} ${lines[lines.length-1].length + 1}]`;
+    }
+
+    function showReport(msg, type) {
+      const panel = document.getElementById('status-panel');
+      panel.className = `p-5 rounded-2xl text-[12px] font-bold border block shadow-sm ${type === 'valid' ? 'panel-valid' : 'panel-error'}`;
+      document.getElementById('status-msg').innerText = msg;
+    }
+
+    function copyJSON() {
+      const out = document.getElementById('json-output');
+      if (!out.value) return;
+      out.select();
+      document.execCommand('copy');
+      const btn = document.getElementById('btn-copy');
+      const old = btn.innerText;
+      btn.innerText = "✓ Copied";
+      setTimeout(() => btn.innerText = old, 1500);
+    }
+
+    function clearAll() {
+      document.getElementById('json-input').value = "";
+      document.getElementById('json-output').value = "";
+      document.getElementById('status-panel').classList.add('hidden');
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      window.location.href = `?lang=${e.target.value}`;
+    });
+
+    window.onload = updateLanguage;
+  </script>
+</body>
+</html>

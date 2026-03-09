@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">UK VAT Calculator 2026 | Add or Remove Value Added Tax — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Free UK VAT Calculator updated for 2026. Easily add or remove VAT (20%, 5%, or custom rates). Accurate calculations based on HMRC standards. No registration required." />
+  <meta name="keywords" content="UK VAT Calculator 2026, Remove VAT calculator, Add VAT online, HMRC VAT rates, VAT inclusive to exclusive, value added tax tool UK" />
+  <link rel="canonical" href="https://mini-tools.uk/vat.html" />
+  
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/vat.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/vat.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/vat.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/vat.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/vat.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "UK VAT Calculator 2026",
+    "operatingSystem": "Web",
+    "applicationCategory": "FinanceApplication",
+    "description": "A professional tool to add or subtract VAT from any amount using standard UK rates (20%, 5%).",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "GBP"
+    }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+    .updated-badge { background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; text-transform: uppercase; display: inline-flex; align-items: center; gap: 4px; }
+    .result-card { background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); color: white; }
+    .rate-btn { transition: all 0.2s; }
+    .active-rate { border-color: #2563eb; background-color: #eff6ff; color: #1e40af; border-width: 2px; }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+    .vat-table th { background-color: #f1f5f9; text-align: left; padding: 12px; font-size: 0.875rem; }
+    .vat-table td { padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.875rem; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-black shadow">M</a>
+        <span class="text-xl font-extrabold text-slate-900 leading-none">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </div>
+      <select id="lang-select" class="bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-bold outline-none cursor-pointer border-none focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-6 py-12 flex-1">
+    <header class="mb-10 text-center lg:text-left">
+      <div class="mb-4">
+        <span id="update-status" class="updated-badge">
+          <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+          HMRC Standards: 2026/27
+        </span>
+      </div>
+      <h1 id="page-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+        UK VAT Calculator
+      </h1>
+      <p id="page-desc" class="text-lg text-slate-500 max-w-2xl">
+        Quickly add or remove VAT (Value Added Tax) from any amount. Optimized for UK businesses and personal use.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+      <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+        <div class="mb-6">
+          <label id="label-amount" class="block text-sm font-bold text-slate-700 mb-2">Amount (£)</label>
+          <input type="number" id="amount-input" placeholder="0.00" class="w-full px-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <div class="mb-8">
+          <label id="label-rate" class="block text-sm font-bold text-slate-700 mb-2">VAT Rate</label>
+          <div class="grid grid-cols-3 gap-3">
+            <button onclick="setRate(20, this)" class="rate-btn py-3 rounded-xl border-2 active-rate font-bold text-sm">20%</button>
+            <button onclick="setRate(5, this)" class="rate-btn py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-sm">5%</button>
+            <input type="number" id="custom-rate" placeholder="Custom" class="py-3 px-2 rounded-xl border border-slate-200 text-center text-sm font-bold outline-none focus:border-blue-500" oninput="setRate(this.value, null)">
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <button id="btn-add" onclick="calculateVAT('add')" class="flex-1 py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-lg shadow-blue-100 transition-all active:scale-95 text-sm uppercase">Add VAT</button>
+          <button id="btn-remove" onclick="calculateVAT('remove')" class="flex-1 py-4 bg-slate-800 hover:bg-slate-900 text-white font-black rounded-2xl shadow-lg transition-all active:scale-95 text-sm uppercase">Remove VAT</button>
+        </div>
+      </div>
+
+      <div id="result-area" class="result-card p-8 rounded-3xl shadow-2xl flex flex-col justify-between hidden">
+        <div>
+          <p id="res-label-total" class="text-blue-100 font-bold text-sm uppercase tracking-widest mb-1">Gross Amount (Total)</p>
+          <h2 id="final-amount" class="text-5xl font-black text-white mb-6">£0.00</h2>
+          
+          <div class="space-y-4 border-t border-white/20 pt-6 text-sm">
+            <div class="flex justify-between">
+              <span id="res-label-net" class="text-blue-100">Net Amount (Excl. VAT)</span>
+              <span id="val-net" class="font-bold">£0.00</span>
+            </div>
+            <div class="flex justify-between">
+              <span id="res-label-vat" class="text-blue-100">VAT Amount</span>
+              <span id="val-vat" class="font-bold">£0.00</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 p-4 bg-black/10 rounded-2xl text-[10px] text-blue-50 italic">
+          * Calculated using the selected rate. Standard UK rate is 20%.
+        </div>
+      </div>
+    </div>
+
+    <article class="prose max-w-none border-t border-slate-200 pt-16">
+      <div id="seo-en">
+        <h2>Understanding VAT in the UK (2026)</h2>
+        <p><strong>Value Added Tax (VAT)</strong> is a consumption tax placed on a product whenever value is added at each stage of the supply chain, from production to the point of sale. Using an <strong>online VAT calculator</strong> helps businesses and consumers quickly find the price before or after tax.</p>
+        
+        <div class="overflow-x-auto my-8">
+          <table class="w-full vat-table">
+            <thead>
+              <tr>
+                <th>VAT Type</th>
+                <th>Rate</th>
+                <th>Typical Examples</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Standard Rate</td>
+                <td>20%</td>
+                <td>Most goods and services</td>
+              </tr>
+              <tr>
+                <td>Reduced Rate</td>
+                <td>5%</td>
+                <td>Home energy, children's car seats</td>
+              </tr>
+              <tr>
+                <td>Zero Rate</td>
+                <td>0%</td>
+                <td>Most food, children's clothes, books</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>How to Calculate VAT Manually?</h3>
+        <p>To <strong>add VAT</strong> to an amount, multiply the net amount by 1.20 (for 20% VAT). To <strong>remove VAT</strong> and find the original price, divide the gross amount by 1.20.</p>
+        <p>Our tool automates this process, ensuring accuracy for your invoices and accounting needs.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>英国增值税 (VAT) 说明</h2>
+        <p><strong>增值税 (VAT)</strong> 是英国最主要的消费税种。无论您是需要计算<strong>不含税价格</strong>还是<strong>含税总额</strong>，我们的在线工具都能为您提供即时结果。</p>
+        <h3>2026 常用增值税率</h3>
+        <ul>
+          <li><strong>标准税率 (20%)</strong>：绝大部分商品和服务。</li>
+          <li><strong>减让税率 (5%)</strong>：家庭能源、燃油等。</li>
+          <li><strong>零税率 (0%)</strong>：大部分食品、童装、书籍。</li>
+        </ul>
+        <p>使用 Mini-Tools.uk，所有计算均在本地完成，确保您的商业财务隐私。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="bg-white border-t border-slate-100 py-12 mt-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="flex justify-center gap-6 mb-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/tax.html" class="hover:text-blue-600">Tax Calculator</a>
+        <a href="/prompt.html" class="hover:text-blue-600">AI Prompt</a>
+      </div>
+      <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+        © 2026 MINI-TOOLS.UK — PRIVACY FIRST UTILITIES
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "UK VAT Calculator 2026 | Add or Remove VAT Online",
+        metaDesc: "Free UK VAT Calculator for 2026. Easily add or remove VAT (20%, 5%). Accurate HMRC standard calculations.",
+        update: "HMRC Standards: 2026/27",
+        title: "UK VAT Calculator", 
+        desc: "Quickly add or remove VAT (Value Added Tax) from any amount. Optimized for UK businesses.",
+        labelAmount: "Amount (£)", labelRate: "VAT Rate",
+        btnAdd: "Add VAT", btnRemove: "Remove VAT",
+        resTotal: "Gross Amount (Total)", resNet: "Net Amount (Excl. VAT)", resVAT: "VAT Amount"
+      },
+      zh: {
+        metaTitle: "英国增值税计算器 2026 | 快速加税/减税工具",
+        metaDesc: "免费英国 VAT 增值税计算器。支持标准税率 20% 及 5%，符合 2026 HMRC 标准。",
+        update: "税务标准：2026/27",
+        title: "增值税计算器 (VAT)", 
+        desc: "快速添加或扣除增值税。专为英国小企业和个人用户优化。",
+        labelAmount: "金额 (£)", labelRate: "增值税率",
+        btnAdd: "计算含税价", btnRemove: "计算不含税价",
+        resTotal: "总额 (含税)", resNet: "净额 (不含税)", resVAT: "税额"
+      },
+      // ... es, fr, de 可根据需要补充
+    };
+
+    let currentRate = 20;
+
+    function getLang() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('lang') || 'en';
+    }
+
+    function updateLanguage() {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+      
+      document.title = data.metaTitle;
+      document.getElementById('update-status').innerHTML = `<span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> ${data.update}`;
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('page-desc').innerText = data.desc;
+      document.getElementById('label-amount').innerText = data.labelAmount;
+      document.getElementById('label-rate').innerText = data.labelRate;
+      document.getElementById('btn-add').innerText = data.btnAdd;
+      document.getElementById('btn-remove').innerText = data.btnRemove;
+      document.getElementById('res-label-total').innerText = data.resTotal;
+      document.getElementById('res-label-net').innerText = data.resNet;
+      document.getElementById('res-label-vat').innerText = data.resVAT;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+    }
+
+    function setRate(rate, btn) {
+      currentRate = parseFloat(rate) || 0;
+      document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('active-rate', 'border-2'));
+      if (btn) btn.classList.add('active-rate', 'border-2');
+    }
+
+    function calculateVAT(mode) {
+      const amount = parseFloat(document.getElementById('amount-input').value);
+      if (isNaN(amount) || amount <= 0) return;
+
+      let net, vat, total;
+      const rateFactor = currentRate / 100;
+
+      if (mode === 'add') {
+        net = amount;
+        vat = amount * rateFactor;
+        total = net + vat;
+      } else {
+        total = amount;
+        net = amount / (1 + rateFactor);
+        vat = total - net;
+      }
+
+      document.getElementById('result-area').classList.remove('hidden');
+      document.getElementById('final-amount').innerText = "£" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('val-net').innerText = "£" + net.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('val-vat').innerText = "£" + vat.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      
+      document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', e.target.value);
+      window.location.href = url.href;
+    });
+
+    window.onload = updateLanguage;
+  </script>
+</body>
+</html>

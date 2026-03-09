@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">Online Text Compare & Diff Checker | Find Differences Instantly — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Free, privacy-first online text comparison tool. Instantly find differences between two texts or code snippets. 100% browser-based, safe for sensitive documents." />
+  <meta name="keywords" content="Text compare online, diff checker, word diff, compare two texts, text difference, online diff tool, private text compare" />
+  <link rel="canonical" href="https://mini-tools.uk/diff.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/diff.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/diff.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/diff.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/diff.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/diff.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Mini-Tools Text Compare & Diff Checker",
+    "operatingSystem": "Web",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "A secure, client-side text comparison tool to find and highlight differences between two documents or pieces of code.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+    .diff-added { background-color: #dcfce7; color: #166534; padding: 0 2px; border-radius: 2px; font-weight: 600; text-decoration: none; }
+    .diff-removed { background-color: #fee2e2; color: #991b1b; padding: 0 2px; border-radius: 2px; text-decoration: line-through; opacity: 0.8; }
+    .editor-font { font-family: 'Monaco', 'Consolas', 'Liberation Mono', monospace; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-black shadow">M</a>
+        <span class="text-xl font-extrabold text-slate-900 leading-none">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </div>
+      <select id="lang-select" class="bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-bold outline-none cursor-pointer border-none focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-6 py-12 flex-1">
+    <header class="mb-10 text-center">
+      <div class="mb-4">
+        <span class="bg-indigo-50 text-indigo-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
+          No Server Uploads • 100% Private
+        </span>
+      </div>
+      <h1 id="page-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+        Text Compare & Diff Checker
+      </h1>
+      <p id="page-desc" class="text-lg text-slate-500 max-w-2xl mx-auto">
+        Instantly compare two versions of text and find what changed. Perfect for code, articles, and legal documents.
+      </p>
+    </header>
+
+    <div class="flex flex-wrap gap-2 mb-4 justify-center">
+        <button onclick="loadSample()" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-50 transition-all shadow-sm">Load Sample</button>
+        <button onclick="swapTexts()" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-50 transition-all shadow-sm">Swap Sides</button>
+        <button onclick="clearAll()" class="px-4 py-2 bg-white border border-slate-200 text-red-500 text-xs font-bold rounded-xl hover:bg-red-50 transition-all shadow-sm">Clear All</button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div class="space-y-2">
+        <label id="label-original" class="text-xs font-black text-slate-400 uppercase tracking-widest px-2">Original Version</label>
+        <textarea id="text-1" class="editor-font w-full h-80 p-6 bg-white border border-slate-200 rounded-3xl shadow-sm outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 text-sm transition-all" placeholder="Paste your original text here..."></textarea>
+      </div>
+      <div class="space-y-2">
+        <label id="label-modified" class="text-xs font-black text-slate-400 uppercase tracking-widest px-2">Modified Version</label>
+        <textarea id="text-2" class="editor-font w-full h-80 p-6 bg-white border border-slate-200 rounded-3xl shadow-sm outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 text-sm transition-all" placeholder="Paste the new version here..."></textarea>
+      </div>
+    </div>
+
+    <div class="flex justify-center mb-16">
+      <button id="btn-compare" onclick="compareTexts()" class="px-12 py-5 bg-slate-900 hover:bg-black text-white font-black rounded-2xl shadow-2xl shadow-slate-200 transition-all active:scale-95 text-xl uppercase tracking-wider">
+        Compare Now
+      </button>
+    </div>
+
+    <div id="result-container" class="hidden space-y-4 animate-in fade-in duration-500">
+      <div class="flex items-center justify-between px-2">
+          <h2 id="label-result" class="text-2xl font-black text-slate-900">Comparison Result</h2>
+          <div id="stats" class="text-[10px] font-bold text-slate-400 uppercase flex gap-4">
+              <span class="text-green-600">+ <span id="add-count">0</span> Additions</span>
+              <span class="text-red-600">- <span id="remove-count">0</span> Deletions</span>
+          </div>
+      </div>
+      <div id="diff-output" class="bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-inner editor-font text-base leading-relaxed min-h-[300px] text-slate-700"></div>
+    </div>
+
+    <article class="prose max-w-none border-t border-slate-200 pt-16 mt-20">
+      <div id="seo-en">
+        <h2>What is an Online Diff Checker?</h2>
+        <p>A <strong>Diff Checker</strong> is a tool used to find the difference between two pieces of text or code. It highlights additions in <span class="text-green-600 font-bold">green</span> and deletions in <span class="text-red-600 font-bold">red</span>. Our tool is optimized for <strong>Word Diff</strong>, meaning it tracks changes down to the individual words for maximum precision.</p>
+        
+        
+
+        <h3>Why choose Mini-Tools.uk for text comparison?</h3>
+        <ul>
+            <li><strong>Zero Uploads:</strong> Unlike other online comparers, your text is processed 100% locally in your browser. Perfect for comparing sensitive contracts, passwords, or private code.</li>
+            <li><strong>Real-time Speed:</strong> Powered by the high-performance <code>jsdiff</code> library, results are generated in milliseconds.</li>
+            <li><strong>Cross-Platform:</strong> Works perfectly on mobile and desktop, no installation required.</li>
+        </ul>
+
+        <h3>Common Use Cases</h3>
+        <p>This <strong>text compare tool</strong> is widely used by developers to track code changes, by editors to see revisions in manuscripts, and by legal professionals to verify contract modifications between versions.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>什么是文本对比工具？</h2>
+        <p><strong>文本对比工具</strong>（也称为 Diff Checker）用于找出两段文字或代码之间的差异。它会以<span class="text-green-600 font-bold">绿色</span>高亮新增内容，以<span class="text-red-600 font-bold">红色</span>高亮删除的内容。本工具采用<strong>单词级对比 (Word Diff)</strong>，确保每一个微小的改动都能被精准捕捉。</p>
+        
+        <h3>为什么选择 Mini-Tools 进行文本比对？</h3>
+        <ul>
+            <li><strong>完全本地化</strong>：您的文字不会被上传到任何服务器，这在比对敏感合同或私人代码时至关重要。</li>
+            <li><strong>即时响应</strong>：毫秒级生成对比结果，无需等待。</li>
+            <li><strong>多场景适用</strong>：支持代码比对、文章改动检查以及法律文件核对。</li>
+        </ul>
+        <p>无论是程序员核对 Git 修改，还是文案编辑检查稿件版本，这都是您的理想选择。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="bg-white border-t border-slate-100 py-12">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <div class="flex justify-center gap-6 mb-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/json.html" class="hover:text-blue-600">JSON Formatter</a>
+        <a href="/word.html" class="hover:text-blue-600">Word Count</a>
+      </div>
+      <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+        © 2026 MINI-TOOLS.UK — SECURE LOCAL TEXT COMPARISON
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "Online Text Compare & Diff Checker | Find Differences Instantly",
+        metaDesc: "Compare two texts or code versions instantly. Free online diff checker, highlights changes in red/green. 100% private, client-side processing.",
+        title: "Text Compare & Diff Checker", desc: "Compare two texts and find differences instantly.",
+        original: "Original Version", modified: "Modified Version", btn: "Compare Now",
+        res: "Comparison Result", placeholder: "Paste your text here..."
+      },
+      zh: {
+        metaTitle: "在线文本对比工具 | 自动查找文字与代码差异 — Mini-Tools",
+        metaDesc: "即时比对两段文字或代码。免费在线 Diff Checker，高亮显示增删内容。100% 本地处理，确保隐私安全。",
+        title: "文本对比 & 差异检查", desc: "对比两段文字，即时发现增加、删除或修改的内容。",
+        original: "原版本", modified: "修改后版本", btn: "开始对比",
+        res: "对比结果报告", placeholder: "在此粘贴您的文本..."
+      }
+    };
+
+    function getLang() {
+      return new URLSearchParams(window.location.search).get('lang') || 'en';
+    }
+
+    function updateLanguage() {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+
+      document.title = data.metaTitle;
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('page-desc').innerText = data.desc;
+      document.getElementById('label-original').innerText = data.original;
+      document.getElementById('label-modified').innerText = data.modified;
+      document.getElementById('btn-compare').innerText = data.btn;
+      document.getElementById('label-result').innerText = data.res;
+      document.getElementById('text-1').placeholder = data.placeholder;
+      document.getElementById('text-2').placeholder = data.placeholder;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+    }
+
+    function compareTexts() {
+      const one = document.getElementById('text-1').value;
+      const other = document.getElementById('text-2').value;
+      const output = document.getElementById('diff-output');
+      const container = document.getElementById('result-container');
+
+      if (!one && !other) return;
+
+      const diff = Diff.diffWords(one, other);
+      
+      output.innerHTML = "";
+      container.classList.remove('hidden');
+
+      let addCount = 0;
+      let removeCount = 0;
+
+      diff.forEach((part) => {
+        const span = document.createElement('span');
+        if (part.added) {
+          span.className = "diff-added";
+          span.innerText = part.value;
+          addCount++;
+        } else if (part.removed) {
+          span.className = "diff-removed";
+          span.innerText = part.value;
+          removeCount++;
+        } else {
+          span.innerText = part.value;
+        }
+        output.appendChild(span);
+      });
+
+      document.getElementById('add-count').innerText = addCount;
+      document.getElementById('remove-count').innerText = removeCount;
+
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function loadSample() {
+        document.getElementById('text-1').value = "The quick brown fox jumps over the lazy dog.";
+        document.getElementById('text-2').value = "The fast brown fox jumps over the active dog.";
+        compareTexts();
+    }
+
+    function swapTexts() {
+        const t1 = document.getElementById('text-1');
+        const t2 = document.getElementById('text-2');
+        const temp = t1.value;
+        t1.value = t2.value;
+        t2.value = temp;
+        if(t1.value || t2.value) compareTexts();
+    }
+
+    function clearAll() {
+        document.getElementById('text-1').value = "";
+        document.getElementById('text-2').value = "";
+        document.getElementById('result-container').classList.add('hidden');
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      window.location.href = `?lang=${e.target.value}`;
+    });
+
+    window.onload = updateLanguage;
+  </script>
+</body>
+</html>

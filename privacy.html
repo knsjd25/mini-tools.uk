@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Privacy Policy - Mini-Tools.uk</title>
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+    .prose h2 { font-weight: 800; font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem; color: #0f172a; }
+    .prose p { margin-bottom: 1rem; line-height: 1.75; color: #64748b; font-size: 0.95rem; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+  <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" id="home-link" class="flex items-center gap-2">
+        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black shadow-sm">M</span>
+        <span class="font-bold text-lg tracking-tight">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </a>
+      <select id="lang-select" class="bg-slate-100 px-3 py-1.5 rounded-lg text-xs font-bold outline-none cursor-pointer border-none">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="flex-1 max-w-3xl mx-auto px-6 py-16">
+    <header class="mb-12 border-b border-slate-200 pb-8">
+      <h1 id="page-title" class="text-4xl font-black tracking-tight text-slate-900 mb-4"></h1>
+      <p class="text-sm font-bold text-blue-600 uppercase tracking-widest">Last Updated: March 6, 2026</p>
+    </header>
+
+    <div id="policy-content" class="prose">
+      </div>
+  </main>
+
+  <footer class="py-12 border-t border-slate-200 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+    &copy; 2026 Mini-Tools.uk — Privacy Matters.
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        title: "Privacy Policy",
+        content: `
+          <h2>1. Introduction</h2>
+          <p>Welcome to Mini-Tools.uk. We are committed to protecting your personal privacy. This policy outlines how we handle data when you use our web utilities.</p>
+          
+          <h2>2. Local Processing (Privacy-First)</h2>
+          <p>Most of our tools (such as JSON formatters, Unit converters, and Word counters) process data <strong>locally in your browser</strong>. This means your input data never reaches our servers.</p>
+          
+          <h2>3. Cookies and Web Beacons</h2>
+          <p>We use cookies to store information about visitors' preferences and to record user-specific information on which pages the user accesses or visits. This helps us optimize your experience.</p>
+          
+          <h2>4. Google AdSense</h2>
+          <p>Google, as a third-party vendor, uses cookies to serve ads on Mini-Tools.uk. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to this site and other sites on the Internet.</p>
+          
+          <h2>5. Log Files</h2>
+          <p>Like many other websites, we make use of log files. These files merely logs visitors to the site – usually a standard procedure for hosting companies and a part of hosting services' analytics. The information inside the log files includes IP addresses, browser type, and date/time stamps.</p>
+          
+          <h2>6. Contact Us</h2>
+          <p>If you have any questions about this Privacy Policy, please contact us at <strong>admin@mini-tools.uk</strong>.</p>
+        `
+      },
+      zh: {
+        title: "隐私政策",
+        content: `
+          <h2>1. 简介</h2>
+          <p>欢迎访问 Mini-Tools.uk。我们致力于保护您的个人隐私。本政策简要说明了您在使用我们的 Web 工具时，我们如何处理相关数据。</p>
+          
+          <h2>2. 本地处理（隐私第一）</h2>
+          <p>我们的绝大部分工具（如 JSON 格式化、单位换算、字数统计等）均在您的<strong>浏览器本地处理</strong>数据。这意味着您的输入内容永远不会上传到我们的服务器。</p>
+          
+          <h2>3. Cookie 与网络信标</h2>
+          <p>我们使用 Cookie 来存储有关访客偏好的信息，并记录用户访问或停留的特定页面信息。这有助于我们优化您的使用体验。</p>
+          
+          <h2>4. Google AdSense 广告</h2>
+          <p>Google 作为第三方供应商，在 Mini-Tools.uk 上投放广告。Google 对广告 Cookie 的使用使其及其合作伙伴能够根据用户对本网站及互联网上其他网站的访问情况向用户投放广告。</p>
+          
+          <h2>5. 日志文件</h2>
+          <p>与许多其他网站一样，我们使用日志文件。这些文件仅记录网站访客——这通常是托管公司的标准程序，也是托管服务分析的一部分。日志文件中的信息包括 IP 地址、浏览器类型以及日期/时间戳。</p>
+          
+          <h2>6. 联系我们</h2>
+          <p>如果您对本隐私政策有任何疑问，请通过 <strong>admin@mini-tools.uk</strong> 与我们联系。</p>
+        `
+      }
+    };
+
+    function updatePage() {
+      const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+      const data = i18n[lang] || i18n.en;
+
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('policy-content').innerHTML = data.content;
+      
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = `/?lang=${lang}`;
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      window.location.href = `?lang=${e.target.value}`;
+    });
+
+    window.onload = updatePage;
+  </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">Free QR Code Generator | Create Custom QR Codes Online — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Generate high-quality QR codes for URLs, Wi-Fi, and text instantly. 100% private, client-side generation, no registration required. High-resolution PNG downloads." />
+  <meta name="keywords" content="QR code generator, free QR code maker, custom QR codes, Wi-Fi QR code, high resolution QR, privacy-first QR generator" />
+  <link rel="canonical" href="https://mini-tools.uk/qr.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/qr.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/qr.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/qr.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/qr.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/qr.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Mini-Tools QR Code Generator",
+    "operatingSystem": "Web",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "A high-speed, privacy-focused QR code generator that works offline and keeps your data secure.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+    .qr-box { background: white; border: 2px dashed #e2e8f0; transition: all 0.3s ease; }
+    #qrcode img { margin: 0 auto; border: 12px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-radius: 8px; }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+    .updated-badge { background: #f1f5f9; color: #475569; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-black shadow">M</a>
+        <span class="text-xl font-extrabold text-slate-900 leading-none">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </div>
+      <select id="lang-select" class="bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-bold outline-none cursor-pointer border-none focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-6 py-12 flex-1">
+    <header class="mb-10 text-center lg:text-left">
+      <div class="mb-4">
+        <span id="update-status" class="updated-badge">
+          ✅ Privacy Verified: 100% Client-Side
+        </span>
+      </div>
+      <h1 id="page-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+        QR Code Generator
+      </h1>
+      <p id="page-desc" class="text-lg text-slate-500 max-w-2xl">
+        Create professional, custom QR codes for your business or personal use. High-resolution output, ready for print.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-20">
+      <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
+        <div>
+          <label id="label-content" class="block text-sm font-bold text-slate-700 mb-2">Target Content / URL</label>
+          <textarea id="qr-input" rows="4" placeholder="Enter link or text here..." class="w-full px-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-medium outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-all" oninput="autoGenerate()"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label id="label-size" class="block text-sm font-bold text-slate-700 mb-2">Export Size</label>
+            <select id="qr-size" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold outline-none cursor-pointer">
+              <option value="256">256x256 (Web)</option>
+              <option value="512" selected>512x512 (Standard)</option>
+              <option value="1024">1024x1024 (HD Print)</option>
+            </select>
+          </div>
+          <div>
+            <label id="label-level" class="block text-sm font-bold text-slate-700 mb-2">Error Correction</label>
+            <select id="qr-level" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold outline-none cursor-pointer">
+              <option value="L">L - 7% Recovery</option>
+              <option value="M" selected>M - 15% Recovery</option>
+              <option value="Q">Q - 25% Recovery</option>
+              <option value="H">H - 30% Recovery</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="btn-generate" onclick="generateQR()" class="w-full py-5 bg-slate-900 hover:bg-black text-white font-black rounded-2xl shadow-xl transition-all active:scale-95 text-lg uppercase tracking-wider">
+          Generate New QR
+        </button>
+      </div>
+
+      <div class="flex flex-col items-center">
+        <div class="qr-box p-6 rounded-3xl mb-8">
+          <div id="qrcode"></div>
+        </div>
+        
+        <div id="action-area" class="hidden w-full max-w-sm space-y-3">
+          <button id="btn-download" onclick="downloadQR()" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span>Download High-Res PNG</span>
+          </button>
+          <p id="qr-hint" class="text-center text-xs text-slate-400">Scan to test, then click download for your high-res file.</p>
+        </div>
+      </div>
+    </div>
+
+    <article class="prose max-w-none border-t border-slate-200 pt-16">
+      <div id="seo-en">
+        <h2>What are the different types of QR Codes?</h2>
+        <p>A QR Code (Quick Response Code) can store various types of information. Our <strong>free online QR generator</strong> is optimized for:</p>
+        <ul>
+          <li><strong>URL QR Codes:</strong> Link directly to your website, social media, or online store.</li>
+          <li><strong>Wi-Fi Access:</strong> Share your home or office network details effortlessly.</li>
+          <li><strong>Text & Information:</strong> Perfect for sharing simple notes or business descriptions.</li>
+        </ul>
+
+        
+        <h3>Understanding QR Error Correction (ECC)</h3>
+        <p>Ever wondered why some QR codes still work when they are slightly damaged? This is due to <strong>Error Correction Levels</strong>. On our tool, you can choose from 4 levels:</p>
+        <ul>
+          <li><strong>Level L (Low):</strong> Allows 7% of the code to be damaged. Best for clean, digital use.</li>
+          <li><strong>Level H (High):</strong> Allows up to 30% recovery. Essential for codes printed on physical goods that might get scratched or worn.</li>
+        </ul>
+
+        <h3>Privacy & Security Guarantee</h3>
+        <p>Unlike many other generators, <strong>Mini-Tools.uk</strong> generates your QR code right in your browser using JavaScript. We do not transmit your data to any server, making this the most secure way to create QR codes for sensitive information.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>如何选择二维码的容错率？</h2>
+        <p>在生成二维码时，<strong>容错率 (Error Correction Level)</strong> 是一个关键参数。它决定了二维码在被部分遮挡或损毁的情况下，依然能够被扫描出来的能力。</p>
+        <ul>
+          <li><strong>低容错 (L)</strong>：适合在屏幕上显示的二维码，数据密度最高。</li>
+          <li><strong>高容错 (H)</strong>：适合印刷在包装、户外海报上，即使二维码有 30% 的损伤也能正常读取。</li>
+        </ul>
+        <h3>为什么选择 Mini-Tools？</h3>
+        <p>我们的工具 100% 免费，且无需注册。最重要的是，<strong>隐私安全</strong>：所有生成的图片均由您的浏览器处理，我们不会收集或存储您的任何数据内容。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="bg-white border-t border-slate-100 py-12 mt-20">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <div class="flex justify-center gap-6 mb-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/tax.html" class="hover:text-blue-600">Tax Calc</a>
+        <a href="/prompt.html" class="hover:text-blue-600">AI Helper</a>
+      </div>
+      <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+        © 2026 MINI-TOOLS.UK — SECURE & LOCAL QR GENERATION
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "Free QR Code Generator 2026 | No Registration, High-Res PNG",
+        metaDesc: "Create custom QR codes instantly. Support for URLs, Wi-Fi, and text. 100% private, browser-based generation. Free high-resolution downloads.",
+        update: "✅ Privacy Verified: 100% Client-Side",
+        title: "QR Code Generator", 
+        desc: "Create professional, custom QR codes for your business or personal use. High-resolution output.",
+        labelContent: "Target Content / URL", labelSize: "Export Size", labelLevel: "Error Correction",
+        btnGen: "Generate New QR", btnDown: "Download High-Res PNG",
+        hint: "Scan to test, then click download for your high-res file."
+      },
+      zh: {
+        metaTitle: "免费二维码生成器 2026 | 无需注册，支持高清下载",
+        metaDesc: "快速生成自定义二维码。支持网址、Wi-Fi、文本。100% 隐私保护，浏览器本地生成。支持高清图片下载。",
+        update: "✅ 隐私保障：100% 浏览器本地生成",
+        title: "二维码生成器", 
+        desc: "为您的业务或个人用途创建专业的自定义二维码。支持高清打印输出。",
+        labelContent: "二维码内容 / 网址", labelSize: "导出尺寸", labelLevel: "容错等级",
+        btnGen: "生成二维码", btnDown: "下载高清图片",
+        hint: "请先扫码测试，确认无误后点击下载高清大图。"
+      }
+    };
+
+    let qrInstance = null;
+
+    function getLang() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('lang') || 'en';
+    }
+
+    function updateLanguage() {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+
+      document.title = data.metaTitle;
+      document.getElementById('update-status').innerHTML = data.update;
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('page-desc').innerText = data.desc;
+      document.getElementById('label-content').innerText = data.labelContent;
+      document.getElementById('label-size').innerText = data.labelSize;
+      document.getElementById('label-level').innerText = data.labelLevel;
+      document.getElementById('btn-generate').innerText = data.btnGen;
+      document.getElementById('btn-download').querySelector('span').innerText = data.btnDown;
+      document.getElementById('qr-hint').innerText = data.hint;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+    }
+
+    function generateQR() {
+      const content = document.getElementById('qr-input').value || "https://mini-tools.uk";
+      const size = parseInt(document.getElementById('qr-size').value);
+      const level = document.getElementById('qr-level').value;
+
+      const container = document.getElementById("qrcode");
+      container.innerHTML = ""; 
+
+      qrInstance = new QRCode(container, {
+        text: content,
+        width: size,
+        height: size,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel[level]
+      });
+
+      document.getElementById('action-area').classList.remove('hidden');
+    }
+
+    // 可选：实现自动生成功能以提升体验
+    let autoGenTimer;
+    function autoGenerate() {
+        clearTimeout(autoGenTimer);
+        autoGenTimer = setTimeout(generateQR, 500);
+    }
+
+    function downloadQR() {
+      const img = document.querySelector('#qrcode img');
+      if (!img) return;
+      
+      const link = document.createElement('a');
+      link.download = `qrcode-minitools-${Date.now()}.png`;
+      link.href = img.src;
+      link.click();
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', e.target.value);
+      window.location.href = url.href;
+    });
+
+    window.onload = () => {
+      updateLanguage();
+      generateQR(); 
+    };
+  </script>
+</body>
+</html>

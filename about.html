@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">About Us | Privacy-First Web Utilities — Mini-Tools.uk</title>
+  <meta name="description" id="meta-desc" content="Discover Mini-Tools.uk. We provide minimalist, high-performance, and privacy-focused web tools that process all data locally in your browser. No server uploads, total security." />
+  <link rel="canonical" href="https://mini-tools.uk/about.html" />
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Mini-Tools.uk",
+      "url": "https://mini-tools.uk",
+      "logo": "https://mini-tools.uk/logo.png",
+      "description": "Minimalist, high-performance web utilities designed for privacy and speed."
+    }
+  }
+  </script>
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .hero-gradient { background: radial-gradient(circle at top right, #eff6ff 0%, transparent 40%), radial-gradient(circle at bottom left, #f5f3ff 0%, transparent 40%); }
+    .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .privacy-diagram { background: white; border: 1px solid #e2e8f0; border-radius: 2rem; }
+  </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col">
+
+  <nav class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" id="home-link" class="flex items-center gap-2 group">
+        <span class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-black shadow-sm group-hover:scale-110 transition-transform">M</span>
+        <span class="font-bold text-lg tracking-tight">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </a>
+      
+      <select id="lang-select" class="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-[11px] font-bold outline-none cursor-pointer focus:ring-2 focus:ring-blue-500 transition-all">
+          <option value="en">🇬🇧 English</option>
+          <option value="zh">🇨🇳 简体中文</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="flex-1 hero-gradient">
+    <section class="max-w-5xl mx-auto px-6 pt-24 pb-16 text-center">
+      <h1 id="hero-title" class="text-5xl md:text-6xl font-black mb-8 tracking-tight leading-tight">
+        Simple tools for <span class="gradient-text">Complex</span> tasks.
+      </h1>
+      <p id="hero-desc" class="text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed">
+        We build minimalist, high-performance web utilities designed to solve daily digital problems without the clutter and data risks of modern apps.
+      </p>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-6 py-12">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white/60 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl shadow-blue-900/5">
+          <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl mb-6">⚡</div>
+          <h3 id="val1-title" class="font-extrabold text-xl mb-3">Fast & Lightweight</h3>
+          <p id="val1-desc" class="text-slate-500 leading-relaxed text-sm">Zero bloat. Our tools load in milliseconds and process data locally in your browser for the fastest experience possible.</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl shadow-blue-900/5">
+          <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-2xl mb-6">🔒</div>
+          <h3 id="val2-title" class="font-extrabold text-xl mb-3">Privacy First</h3>
+          <p id="val2-desc" class="text-slate-500 leading-relaxed text-sm">Your data never leaves your device. We use client-side technology to ensure your sensitive info is never uploaded to any server.</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl shadow-blue-900/5">
+          <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl mb-6">🌍</div>
+          <h3 id="val3-title" class="font-extrabold text-xl mb-3">Global Access</h3>
+          <p id="val3-desc" class="text-slate-500 leading-relaxed text-sm">Full multi-language support and high accessibility. Powerful digital utilities made for everyone, regardless of where you are.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 py-20">
+      <div class="privacy-diagram p-8 md:p-12 shadow-2xl shadow-slate-200">
+        <div class="text-center mb-10">
+          <h2 id="diag-title" class="text-3xl font-black mb-4">How we protect your data</h2>
+          <p id="diag-desc" class="text-slate-500 text-sm uppercase font-bold tracking-widest">Client-Side vs. Server-Side Processing</p>
+        </div>
+        
+        
+
+        <div class="grid md:grid-cols-2 gap-10 mt-12 text-sm">
+          <div class="space-y-3">
+            <h4 class="font-black text-blue-600 uppercase tracking-tighter">Typical Web Apps</h4>
+            <p class="text-slate-500">Your sensitive data is uploaded to a remote server, processed, and stored in a database. You have no control over who sees it.</p>
+          </div>
+          <div class="space-y-3 border-l border-slate-100 pl-10">
+            <h4 class="font-black text-emerald-600 uppercase tracking-tighter">Mini-Tools.uk</h4>
+            <p class="text-slate-500">Processing happens entirely inside <b>your browser</b>. The raw data remains on your machine and is never transmitted. Total peace of mind.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+      <h2 id="cta-title" class="text-3xl font-black mb-6 italic">Ready to boost your productivity?</h2>
+      <a href="/" class="inline-flex items-center gap-3 px-10 py-5 bg-slate-900 text-white font-black rounded-2xl hover:bg-black transition-all shadow-xl active:scale-95">
+        <span id="cta-btn">Explore All Tools</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+      </a>
+    </section>
+  </main>
+
+  <footer class="py-12 bg-white border-t border-slate-200 text-center">
+    <div class="flex justify-center gap-8 mb-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/privacy.html" class="hover:text-blue-600">Privacy Policy</a>
+        <a href="/terms.html" class="hover:text-blue-600">Terms</a>
+    </div>
+    <div class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+        &copy; 2026 MINI-TOOLS.UK — FAST, SECURE, MINIMALIST
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "About Us | Privacy-First Web Utilities — Mini-Tools.uk",
+        metaDesc: "Minimalist, high-performance, and privacy-focused web tools that process all data locally in your browser. No server uploads.",
+        heroTitle: "Simple tools for <span class='gradient-text'>Complex</span> tasks.",
+        heroDesc: "We build minimalist, high-performance web utilities designed to solve daily digital problems without the clutter and data risks of modern apps.",
+        val1Title: "Fast & Lightweight",
+        val1Desc: "Zero bloat. Our tools load in milliseconds and process data locally in your browser for the fastest experience possible.",
+        val2Title: "Privacy First",
+        val2Desc: "Your data never leaves your device. We use client-side technology to ensure your info is never uploaded to any server.",
+        val3Title: "Global Access",
+        val3Desc: "Full multi-language support and accessibility. Powerful digital utilities made for everyone, everywhere.",
+        diagTitle: "How we protect your data",
+        diagDesc: "Client-Side vs. Server-Side Processing",
+        ctaTitle: "Ready to boost your productivity?",
+        ctaBtn: "Explore All Tools"
+      },
+      zh: {
+        metaTitle: "关于我们 | 隐私至上的在线工具集 — Mini-Tools.uk",
+        metaDesc: "我们提供极简、高效且注重隐私的 Web 工具，所有数据均在浏览器本地处理，绝不上传服务器。",
+        heroTitle: "化繁为简的<span class='gradient-text'>生产力</span>工具",
+        heroDesc: "我们打造极简、高效的 Web 实用程序，旨在解决日常数字问题，同时避免现代应用带来的数据泄露风险。",
+        val1Title: "轻量且极速",
+        val1Desc: "零冗余。工具秒速加载，所有计算在浏览器本地完成，确保极致的响应性能。",
+        val2Title: "隐私至上",
+        val2Desc: "您的数据永远不会离开您的设备。我们采用客户端技术，确保敏感信息绝不上传至任何服务器。",
+        val3Title: "全球化支持",
+        val3Desc: "完善的多语言支持和无障碍设计。无论您身在何处，都能轻松使用强大的数字工具。",
+        diagTitle: "我们如何保护您的数据",
+        diagDesc: "客户端处理 vs. 服务器处理",
+        ctaTitle: "准备好提升效率了吗？",
+        ctaBtn: "探索所有工具"
+      }
+    };
+
+    function updatePage() {
+      const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+      const data = i18n[lang] || i18n.en;
+
+      document.title = data.metaTitle;
+      document.getElementById('meta-desc').setAttribute('content', data.metaDesc);
+      
+      document.getElementById('hero-title').innerHTML = data.heroTitle;
+      document.getElementById('hero-desc').innerText = data.heroDesc;
+      document.getElementById('val1-title').innerText = data.val1Title;
+      document.getElementById('val1-desc').innerText = data.val1Desc;
+      document.getElementById('val2-title').innerText = data.val2Title;
+      document.getElementById('val2-desc').innerText = data.val2Desc;
+      document.getElementById('val3-title').innerText = data.val3Title;
+      document.getElementById('val3-desc').innerText = data.val3Desc;
+      document.getElementById('diag-title').innerText = data.diagTitle;
+      document.getElementById('diag-desc').innerText = data.diagDesc;
+      document.getElementById('cta-title').innerText = data.ctaTitle;
+      document.getElementById('cta-btn').innerText = data.ctaBtn;
+      
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = `/?lang=${lang}`;
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      window.location.href = `?lang=${e.target.value}`;
+    });
+
+    window.onload = updatePage;
+  </script>
+</body>
+</html>

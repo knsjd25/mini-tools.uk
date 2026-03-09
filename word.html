@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">Online Word Counter | Real-time Character & Sentence Count — Mini-Tools</title>
+  <meta name="description" id="meta-desc" content="Free online word counter tool. Calculate words, characters (with/without spaces), sentences, and paragraphs in real-time. Includes reading time and social media limits." />
+  <meta name="keywords" content="word counter online, character count, essay word count, twitter character limit, writing stats, reading time calculator, word count for SEO" />
+  <link rel="canonical" href="https://mini-tools.uk/word.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/word.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/word.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/word.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/word.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/word.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Mini-Tools Word Counter",
+    "operatingSystem": "Web",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "A professional real-time text analysis tool for counting words, characters, and estimating reading time.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+    .stat-card { background: white; border: 1px solid #e2e8f0; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
+    .stat-value { color: #2563eb; }
+    textarea { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+    .prose h2 { font-weight: 800; color: #0f172a; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+    .limit-badge { background: #f1f5f9; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #64748b; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" id="home-link" class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-black shadow">M</a>
+        <span class="text-xl font-extrabold text-slate-900 leading-none tracking-tight">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </div>
+      <select id="lang-select" class="bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-bold outline-none cursor-pointer border-none focus:ring-2 focus:ring-blue-500">
+        <option value="en">🇬🇧 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-6 py-12 flex-1">
+    <header class="mb-10 text-center">
+      <h1 id="page-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+        Professional Word Counter
+      </h1>
+      <p id="page-desc" class="text-lg text-slate-500 max-w-2xl mx-auto">
+        Analyze your text in real-time. Count words, characters, and estimate reading time for SEO and social media.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+      <div class="stat-card p-5 rounded-2xl shadow-sm text-center">
+        <div id="label-words" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Words</div>
+        <div id="val-words" class="text-2xl font-black stat-value">0</div>
+      </div>
+      <div class="stat-card p-5 rounded-2xl shadow-sm text-center">
+        <div id="label-chars" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Characters</div>
+        <div id="val-chars" class="text-2xl font-black stat-value">0</div>
+      </div>
+      <div class="stat-card p-5 rounded-2xl shadow-sm text-center">
+        <div id="label-sentences" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Sentences</div>
+        <div id="val-sentences" class="text-2xl font-black stat-value">0</div>
+      </div>
+      <div class="stat-card p-5 rounded-2xl shadow-sm text-center">
+        <div id="label-paragraphs" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Paragraphs</div>
+        <div id="val-paragraphs" class="text-2xl font-black stat-value">0</div>
+      </div>
+      <div class="stat-card p-5 rounded-2xl shadow-sm text-center border-blue-100 bg-blue-50/30">
+        <div id="label-reading" class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Read Time</div>
+        <div id="val-reading" class="text-2xl font-black text-blue-600">0m</div>
+      </div>
+      <div class="stat-card p-5 rounded-2xl shadow-sm text-center border-emerald-100 bg-emerald-50/30">
+        <div id="label-speaking" class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">Speak Time</div>
+        <div id="val-speaking" class="text-2xl font-black text-emerald-600">0m</div>
+      </div>
+    </div>
+
+    <div class="relative bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden mb-12">
+      <textarea id="text-input" rows="14" class="w-full p-8 text-lg font-medium text-slate-700 outline-none resize-none bg-transparent" placeholder="Type or paste your content here..."></textarea>
+      
+      <div class="flex flex-col md:flex-row items-center justify-between p-4 bg-slate-50 border-t border-slate-100 gap-4">
+        <div class="flex gap-2">
+          <button id="btn-copy" onclick="copyText()" class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-xl hover:bg-slate-100 transition-all active:scale-95 shadow-sm">Copy All</button>
+          <button id="btn-clear" onclick="clearText()" class="px-5 py-2.5 bg-white border border-slate-200 text-red-500 text-sm font-bold rounded-xl hover:bg-red-50 transition-all active:scale-95 shadow-sm">Clear Content</button>
+        </div>
+        <div class="flex items-center gap-4 text-[10px] font-bold text-slate-400 uppercase">
+          <span class="flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> <span id="status-msg">Real-time Analysis</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+      <div class="p-4 bg-white rounded-2xl border border-slate-100 text-center">
+        <div class="text-[10px] font-black text-slate-400 uppercase mb-2">Twitter/X</div>
+        <span class="limit-badge">280 Chars</span>
+      </div>
+      <div class="p-4 bg-white rounded-2xl border border-slate-100 text-center">
+        <div class="text-[10px] font-black text-slate-400 uppercase mb-2">LinkedIn Post</div>
+        <span class="limit-badge">3000 Chars</span>
+      </div>
+      <div class="p-4 bg-white rounded-2xl border border-slate-100 text-center">
+        <div class="text-[10px] font-black text-slate-400 uppercase mb-2">Instagram</div>
+        <span class="limit-badge">2200 Chars</span>
+      </div>
+      <div class="p-4 bg-white rounded-2xl border border-slate-100 text-center">
+        <div class="text-[10px] font-black text-slate-400 uppercase mb-2">Google Meta</div>
+        <span class="limit-badge">~155 Chars</span>
+      </div>
+    </div>
+
+    <article class="prose max-w-none border-t border-slate-200 pt-16">
+      <div id="seo-en">
+        <h2>Why is Word Count important for SEO?</h2>
+        <p>In the world of <strong>Search Engine Optimization (SEO)</strong>, content length is a known factor that influences search rankings. While quality is king, long-form content (usually over 1,500 words) tends to rank better for complex keywords. Our <strong>free online word counter</strong> helps you ensure your blog posts, meta descriptions, and articles meet the target length.</p>
+        
+        <h3>Reading and Speaking Time Estimation</h3>
+        <p>We use an average reading speed of <strong>200 words per minute (wpm)</strong> and a speaking speed of <strong>130 wpm</strong>. This is essential for speechwriters and video script creators to gauge their presentation length accurately.</p>
+        
+        <h3>Data Privacy</h3>
+        <p>At Mini-Tools.uk, we prioritize your security. All text analysis is performed locally in your browser. We never store or transmit your text, making it 100% secure for sensitive documents.</p>
+      </div>
+
+      <div id="seo-zh" style="display: none;">
+        <h2>为什么字数统计对写作至关重要？</h2>
+        <p>无论您是在撰写学术论文、SEO 博客文章还是社交媒体文案，字数限制始终是一个关键指标。使用 <strong>Mini-Tools 字数统计工具</strong>，您可以实时掌握文案的进度。</p>
+        <h3>功能亮点：</h3>
+        <ul>
+          <li><strong>中英文混排支持</strong>：完美兼容中文汉字与英文单词的混合统计。</li>
+          <li><strong>时间预测</strong>：自动估算阅读该文本所需的时间，以及在演讲时的演说时间。</li>
+          <li><strong>社交媒体优化</strong>：参考内置的社交媒体字符限制，优化您的营销推文。</li>
+        </ul>
+        <p>本工具完全免费，且<strong>保护隐私</strong>：所有计算均在您的浏览器本地完成，我们不会上传或存储您的任何文字内容。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="bg-white border-t border-slate-100 py-12">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <div class="flex justify-center gap-6 mb-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600">Home</a>
+        <a href="/unit.html" class="hover:text-blue-600">Unit Converter</a>
+        <a href="/tax.html" class="hover:text-blue-600">Tax Calc</a>
+      </div>
+      <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+        © 2026 MINI-TOOLS.UK — SECURE REAL-TIME TEXT ANALYSIS
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "Online Word Counter 2026 | Character & Sentence Analysis Tool",
+        metaDesc: "Analyze your text in real-time. Count words, characters, sentences, and estimate reading time. 100% free and private.",
+        title: "Professional Word Counter", desc: "Real-time character, word, and sentence counting.",
+        words: "Words", chars: "Characters", sentences: "Sentences", paragraphs: "Paragraphs",
+        reading: "Read Time", speaking: "Speak Time",
+        placeholder: "Type or paste your content here...",
+        btnCopy: "Copy All", btnClear: "Clear Content", msg: "Analysis Active"
+      },
+      zh: {
+        metaTitle: "字数统计工具 | 实时统计字符数、单词数及阅读时长",
+        metaDesc: "免费在线字数统计工具。实时计算字数、字符（含空格/不含空格）、句子和段落。包含阅读时间估算。",
+        title: "专业字数统计器", desc: "实时统计文本字符数、单词数、句子及段落。",
+        words: "字数/单词", chars: "总字符数", sentences: "总句子数", paragraphs: "段落总数",
+        reading: "阅读时长", speaking: "演说时长",
+        placeholder: "在此输入或粘贴您的内容...",
+        btnCopy: "一键复制", btnClear: "清空内容", msg: "实时分析中"
+      }
+    };
+
+    const textInput = document.getElementById('text-input');
+
+    function getLang() {
+      return new URLSearchParams(window.location.search).get('lang') || 'en';
+    }
+
+    function updateLanguage() {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+
+      document.title = data.metaTitle;
+      document.getElementById('page-title').innerText = data.title;
+      document.getElementById('page-desc').innerText = data.desc;
+      document.getElementById('label-words').innerText = data.words;
+      document.getElementById('label-chars').innerText = data.chars;
+      document.getElementById('label-sentences').innerText = data.sentences;
+      document.getElementById('label-paragraphs').innerText = data.paragraphs;
+      document.getElementById('label-reading').innerText = data.reading;
+      document.getElementById('label-speaking').innerText = data.speaking;
+      document.getElementById('text-input').placeholder = data.placeholder;
+      document.getElementById('btn-copy').innerText = data.btnCopy;
+      document.getElementById('btn-clear').innerText = data.btnClear;
+      document.getElementById('status-msg').innerText = data.msg;
+      
+      document.getElementById('seo-zh').style.display = (lang === 'zh') ? 'block' : 'none';
+      document.getElementById('seo-en').style.display = (lang === 'zh') ? 'none' : 'block';
+
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = "/?lang=" + lang;
+    }
+
+    function analyzeText() {
+      const text = textInput.value;
+      const cleanText = text.trim();
+      
+      // 1. 字数统计 (处理中英混排)
+      // 中文按字算，英文按词算
+      const words = cleanText ? (cleanText.match(/[\u4e00-\u9fa5]|\b\w+\b/g) || []).length : 0;
+      
+      // 2. 字符统计
+      const chars = text.length;
+      
+      // 3. 句子统计
+      const sentences = cleanText ? (cleanText.match(/[.!?。！？](\s|$)/g) || []).length + (/[^.!?。！？]$/.test(cleanText) ? 1 : 0) : 0;
+      
+      // 4. 段落统计
+      const paragraphs = cleanText ? cleanText.split(/\n+/).filter(p => p.trim().length > 0).length : 0;
+
+      // 5. 阅读时长 (平均 200 字/分钟)
+      const readMinutes = Math.ceil(words / 200);
+      
+      // 6. 演说时长 (平均 130 字/分钟)
+      const speakMinutes = Math.ceil(words / 130);
+
+      document.getElementById('val-words').innerText = words;
+      document.getElementById('val-chars').innerText = chars;
+      document.getElementById('val-sentences').innerText = sentences;
+      document.getElementById('val-paragraphs').innerText = paragraphs;
+      document.getElementById('val-reading').innerText = readMinutes + "m";
+      document.getElementById('val-speaking').innerText = speakMinutes + "m";
+    }
+
+    function clearText() {
+      textInput.value = "";
+      analyzeText();
+    }
+
+    function copyText() {
+      const text = textInput.value;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btn-copy');
+        const original = btn.innerText;
+        btn.innerText = "✓ Copied!";
+        setTimeout(() => btn.innerText = original, 2000);
+      });
+    }
+
+    textInput.addEventListener('input', analyzeText);
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', e.target.value);
+      window.location.href = url.href;
+    });
+
+    window.onload = updateLanguage;
+  </script>
+</body>
+</html>

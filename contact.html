@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title id="meta-title">Contact Us | Support & Feedback — Mini-Tools.uk</title>
+  <meta name="description" id="meta-desc" content="Have questions, bug reports, or business inquiries? Contact the Mini-Tools.uk team. We provide support for our privacy-first web utilities." />
+  <link rel="canonical" href="https://mini-tools.uk/contact.html" />
+
+  <link rel="alternate" hreflang="en" href="https://mini-tools.uk/contact.html?lang=en" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://mini-tools.uk/contact.html?lang=zh" />
+  <link rel="alternate" hreflang="es" href="https://mini-tools.uk/contact.html?lang=es" />
+  <link rel="alternate" hreflang="fr" href="https://mini-tools.uk/contact.html?lang=fr" />
+  <link rel="alternate" hreflang="de" href="https://mini-tools.uk/contact.html?lang=de" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Mini-Tools.uk",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "admin@mini-tools.uk",
+        "contactType": "customer support"
+      }
+    }
+  }
+  </script>
+
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .contact-hero { background: radial-gradient(circle at top right, #eff6ff 0%, transparent 40%); }
+    .email-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .email-card:hover { border-color: #2563eb; transform: translateY(-4px); box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col contact-hero">
+
+  <nav class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" id="home-link" class="flex items-center gap-2 group">
+        <span class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-black shadow-sm group-hover:rotate-12 transition-transform">M</span>
+        <span class="font-bold text-lg tracking-tight text-slate-900">Mini-Tools<span class="text-blue-600">.uk</span></span>
+      </a>
+      
+      <select id="lang-select" class="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-[11px] font-bold outline-none cursor-pointer hover:bg-white transition-all">
+          <option value="en">🇬🇧 English</option>
+          <option value="zh">🇨🇳 简体中文</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="de">🇩🇪 Deutsch</option>
+      </select>
+    </div>
+  </nav>
+
+  <main class="flex-1 flex flex-col items-center justify-center p-6 py-20">
+    <div class="max-w-2xl w-full text-center">
+      <header class="mb-12">
+        <h1 id="title" class="text-4xl md:text-5xl font-black mb-4 tracking-tight text-slate-900 italic">Get in touch.</h1>
+        <p id="desc" class="text-lg text-slate-500 font-medium leading-relaxed">Have a bug to report or a business inquiry? Reach out directly.</p>
+      </header>
+
+      <a href="mailto:admin@mini-tools.uk" class="email-card group block bg-white border-2 border-slate-100 p-10 rounded-[2.5rem] shadow-sm relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+        
+        <div class="flex flex-col md:flex-row items-center justify-between relative z-10 gap-6">
+            <div class="text-center md:text-left">
+                <span id="label" class="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-3 block">Official Channel</span>
+                <span class="text-2xl md:text-3xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">admin@mini-tools.uk</span>
+            </div>
+            <div class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl group-hover:bg-blue-600 group-hover:rotate-12 transition-all shadow-xl">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            </div>
+        </div>
+      </a>
+
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10 px-6 text-center md:text-left border-t border-slate-200 pt-16">
+        <div>
+            <h4 id="info1-h" class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Response Time</h4>
+            <p id="info1-p" class="text-sm font-bold text-slate-600 leading-relaxed italic">We typically respond within 24-48 business hours.</p>
+        </div>
+        <div>
+            <h4 id="info2-h" class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Community</h4>
+            <p id="info2-p" class="text-sm font-bold text-slate-600 leading-relaxed italic">Suggest features or follow updates on our official platforms.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="py-12 bg-white border-t border-slate-100 text-center">
+    <div class="flex justify-center gap-8 mb-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+        <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
+        <a href="/about.html" class="hover:text-blue-600 transition-colors">About Us</a>
+        <a href="/privacy.html" class="hover:text-blue-600 transition-colors">Privacy</a>
+    </div>
+    <div class="text-[10px] text-slate-300 font-bold uppercase tracking-[0.2em]">
+        &copy; 2026 MINI-TOOLS.UK — SMART DIGITAL UTILITIES
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        metaTitle: "Contact Us | Support & Feedback — Mini-Tools.uk",
+        metaDesc: "Need help or want to suggest a feature? Reach out to Mini-Tools.uk for professional support and inquiries.",
+        title: "Get in touch.",
+        desc: "Have a bug to report or a business inquiry? Reach out directly.",
+        label: "Official Channel",
+        info1h: "Response Time",
+        info1p: "We typically respond within 24-48 business hours.",
+        info2h: "UK Based Support",
+        info2p: "Serving users globally with a focus on speed and privacy."
+      },
+      zh: {
+        metaTitle: "联系我们 | 支持与反馈 — Mini-Tools.uk",
+        metaDesc: "需要帮助或有功能建议？联系 Mini-Tools.uk 团队获取专业的技术支持与商务合作咨询。",
+        title: "联系我们",
+        desc: "无论是报告 Bug 还是商务合作咨询，欢迎随时联系我们。",
+        label: "官方联系方式",
+        info1h: "响应速度",
+        info1p: "我们通常会在 24-48 小时内回复您的邮件。",
+        info2h: "全球技术支持",
+        info2p: "总部位于英国，为全球用户提供极速、私密的工具服务。"
+      }
+    };
+
+    function updatePage() {
+      const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+      const data = i18n[lang] || i18n.en;
+
+      document.title = data.metaTitle;
+      document.getElementById('meta-desc').setAttribute('content', data.metaDesc);
+
+      document.getElementById('title').innerText = data.title;
+      document.getElementById('desc').innerText = data.desc;
+      document.getElementById('label').innerText = data.label;
+      document.getElementById('info1-h').innerText = data.info1h;
+      document.getElementById('info1-p').innerText = data.info1p;
+      document.getElementById('info2-h').innerText = data.info2h;
+      document.getElementById('info2-p').innerText = data.info2p;
+      
+      document.getElementById('lang-select').value = lang;
+      document.getElementById('home-link').href = `/?lang=${lang}`;
+      document.documentElement.lang = lang;
+    }
+
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      window.location.href = `?lang=${e.target.value}`;
+    });
+
+    window.onload = updatePage;
+  </script>
+</body>
+</html>

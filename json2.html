@@ -1,0 +1,242 @@
+<script>
+(function(){
+  // 防止重复执行
+  if (window.__mini_tools_json_patch_applied) return;
+  window.__mini_tools_json_patch_applied = true;
+
+  // 轻量 i18n（和你原来的一致）
+  const i18n = {
+    en: { title: "JSON Formatter", btnBeautify: "Beautify", btnMinify: "Minify", btnCopy: "Copy Result", btnClear: "Clear", valid: "Valid JSON!", invalid: "Error: ", copied: "Copied!" },
+    zh: { title: "JSON 格式化", btnBeautify: "美化代码", btnMinify: "压缩代码", btnCopy: "复制结果", btnClear: "清空", valid: "格式正确!", invalid: "错误: ", copied: "已复制!" },
+    es: { title: "Formateador JSON", btnBeautify: "Embellecer", btnMinify: "Minimizar", btnCopy: "Copiar", btnClear: "Limpiar", valid: "¡Válido!", invalid: "Error: ", copied: "¡Copiado!" },
+    fr: { title: "Formateur JSON", btnBeautify: "Embellir", btnMinify: "Minifier", btnCopy: "Copier", btnClear: "Effacer", valid: "Valide!", invalid: "Erreur: ", copied: "Copié!" },
+    de: { title: "JSON Formatter", btnBeautify: "Format", btnMinify: "Minimieren", btnCopy: "Kopieren", btnClear: "Löschen", valid: "Gültig!", invalid: "Fehler: ", copied: "Kopiert!" }
+  };
+
+  // 获取 lang（不改变你的 url 行为）
+  function getLang() {
+    return new URLSearchParams(window.location.search).get('lang') || 'en';
+  }
+
+  // 安全更新语言（不会覆盖其他 onload）
+  function updateLanguage() {
+    try {
+      const lang = getLang();
+      const data = i18n[lang] || i18n['en'];
+      const titleEl = document.getElementById('page-title');
+      if (titleEl) titleEl.innerText = data.title;
+      const btnBeautify = document.getElementById('btn-beautify');
+      if (btnBeautify) btnBeautify.innerText = data.btnBeautify;
+      const btnMinify = document.getElementById('btn-minify');
+      if (btnMinify) btnMinify.innerText = data.btnMinify;
+      const btnCopy = document.getElementById('btn-copy');
+      if (btnCopy) btnCopy.innerText = data.btnCopy;
+      const btnClear = document.getElementById('btn-clear');
+      if (btnClear) btnClear.innerText = data.btnClear;
+      const select = document.getElementById('lang-select');
+      if (select) select.value = lang;
+      const homeLink = document.getElementById('home-link');
+      if (homeLink) homeLink.href = "/?lang=" + lang;
+      document.documentElement.lang = lang;
+    } catch (err) {
+      console.warn('updateLanguage error', err);
+    }
+  }
+
+  // 在 DOMContentLoaded 时运行 updateLanguage（不覆盖任何 window.onload）
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateLanguage);
+  } else {
+    // already loaded
+    setTimeout(updateLanguage, 0);
+  }
+
+  // ---------- JSON 解析 / 报错处理（只影响这部分功能） ----------
+  let lastError = null;
+
+  // 公共接口：processJSON、autoFormat、copyJSON、clearAll —— 与原来按钮绑定保持一致
+  window.processJSON = function(mode) {
+    try {
+      const ta = document.getElementById('json-input');
+      const output = document.getElementById('json-output');
+      const data = i18n[getLang()] || i18n['en'];
+      if (!ta) return;
+      const input = ta.value;
+      if (!input.trim()) return;
+      try {
+        const obj = JSON.parse(input);
+        output.value = (mode === 'beautify') ? JSON.stringify(obj, null, 4) : JSON.stringify(obj);
+        showFeedback(data.valid, "success");
+        lastError = null;
+        clearTextareaSelection();
+      } catch (e) {
+        lastError = parseError(e);
+        showFeedback(data.invalid + (e.message || ''), "error");
+        if (typeof lastError.pos === 'number') {
+          markErrorInTextarea(lastError.pos);
+        } else if (lastError.line != null && lastError.column != null) {
+          const pos = lineColumnToPos(input, lastError.line, lastError.column);
+          if (pos != null) markErrorInTextarea(pos);
+        }
+      }
+    } catch (err) {
+      console.error('processJSON unexpected', err);
+    }
+  };
+
+  window.autoFormat = function() {
+    try {
+      const ta = document.getElementById('json-input');
+      const out = document.getElementById('json-output');
+      if (!ta) return;
+      const input = ta.value.trim();
+      if (input.startsWith('{') || input.startsWith('[')) {
+        try {
+          const obj = JSON.parse(input);
+          if (out) out.value = JSON.stringify(obj, null, 4);
+          lastError = null;
+          clearTextareaSelection();
+        } catch (e) {
+          // 不弹窗，记录供“Show errors”使用
+          lastError = parseError(e);
+        }
+      }
+    } catch (err) {
+      console.error('autoFormat unexpected', err);
+    }
+  };
+
+  window.copyJSON = function() {
+    try {
+      const output = document.getElementById('json-output');
+      const data = i18n[getLang()] || i18n['en'];
+      if (!output || !output.value) return;
+      output.select();
+      document.execCommand('copy');
+      showFeedback(data.copied, "success");
+    } catch (err) {
+      console.warn('copyJSON failed', err);
+    }
+  };
+
+  window.clearAll = function() {
+    try {
+      const ta = document.getElementById('json-input');
+      const out = document.getElementById('json-output');
+      if (ta) ta.value = "";
+      if (out) out.value = "";
+      const fb = document.getElementById('feedback');
+      if (fb) fb.classList.add('hidden');
+      clearTextareaSelection();
+    } catch (err) {
+      console.warn('clearAll failed', err);
+    }
+  };
+
+  // parse Error 信息，尽量提取 pos / line / column
+  function parseError(e) {
+    const msg = e && e.message ? e.message : String(e);
+    let pos = null, line = null, column = null;
+    let m = msg.match(/position\s+(\d+)/i) || msg.match(/at\s+position\s+(\d+)/i) || msg.match(/at\s+(\d+)/i);
+    if (m) pos = parseInt(m[1], 10);
+    m = msg.match(/line\s+(\d+).*column\s+(\d+)/i);
+    if (m) { line = parseInt(m[1], 10); column = parseInt(m[2], 10); }
+    if (pos == null) {
+      m = msg.match(/char\s+(\d+)/i);
+      if (m) pos = parseInt(m[1], 10);
+    }
+    return { raw: msg, pos, line, column };
+  }
+
+  function lineColumnToPos(text, line, column) {
+    const lines = text.split(/\r?\n/);
+    if (line < 1) line = 1;
+    if (line > lines.length) line = lines.length;
+    let pos = 0;
+    for (let i = 0; i < line - 1; i++) pos += lines[i].length + 1;
+    pos += Math.max(0, column - 1);
+    return pos;
+  }
+
+  function markErrorInTextarea(pos) {
+    try {
+      const ta = document.getElementById('json-input');
+      if (!ta || typeof pos !== 'number' || pos < 0) return;
+      ta.focus();
+      const start = Math.min(pos, ta.value.length);
+      const end = Math.min(start + 1, ta.value.length);
+      // 设定选区
+      try { ta.setSelectionRange(start, end); } catch (err) {}
+      // 向上滚动以便可见：估算行高
+      const before = ta.value.slice(0, start);
+      const lineIndex = before.split(/\r?\n/).length - 1;
+      const lineHeight = estimateLineHeight(ta) || 18;
+      const scrollTo = Math.max(0, lineIndex * lineHeight - (ta.clientHeight / 2));
+      if (ta.scrollTop !== undefined) ta.scrollTop = scrollTo;
+      // 短暂视觉提示
+      ta.style.boxShadow = "0 0 0 3px rgba(239,68,68,0.12)";
+      setTimeout(() => { ta.style.boxShadow = ""; }, 1600);
+    } catch (err) {
+      console.warn('markErrorInTextarea failed', err);
+    }
+  }
+
+  function clearTextareaSelection() {
+    try {
+      const ta = document.getElementById('json-input');
+      if (!ta) return;
+      const len = ta.value ? ta.value.length : 0;
+      ta.selectionStart = ta.selectionEnd = len;
+    } catch (err) {}
+  }
+
+  function estimateLineHeight(ta) {
+    try {
+      const cs = window.getComputedStyle(ta);
+      const lh = cs.lineHeight;
+      if (lh && lh !== 'normal') return parseFloat(lh);
+      const fs = parseFloat(cs.fontSize) || 13;
+      return fs * 1.4;
+    } catch (e) { return null; }
+  }
+
+  // 显示顶端或侧边 feedback（保留原逻辑）
+  function showFeedback(msg, type) {
+    try {
+      const fb = document.getElementById('feedback');
+      if (!fb) {
+        // 若页面缺失 feedback 元素，则直接打印控制台并 alert（避免完全静默）
+        console[type === 'success' ? 'log' : 'error']('[feedback] ' + msg);
+        return;
+      }
+      fb.innerText = msg;
+      fb.className = `absolute top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2.5 rounded-full text-xs font-black shadow-2xl block ${type === 'success' ? 'success-msg' : 'error-msg'}`;
+      setTimeout(() => fb.classList.add('hidden'), 2500);
+    } catch (err) {
+      console.warn('showFeedback failed', err);
+    }
+  }
+
+  // 保持原有 lang select 行为（如果存在）
+  try {
+    const langSelect = document.getElementById('lang-select');
+    if (langSelect && !langSelect.__mini_tools_listener_added) {
+      langSelect.__mini_tools_listener_added = true;
+      langSelect.addEventListener('change', (e) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', e.target.value);
+        window.location.href = url.href;
+      });
+    }
+  } catch (err) { console.warn(err); }
+
+  // 快捷键：Ctrl/Cmd + Enter = Beautify
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      if (typeof window.processJSON === 'function') window.processJSON('beautify');
+    }
+  });
+
+  console.log('JSON helper loaded (non-destructive patch).');
+})();
+</script>
